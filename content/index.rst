@@ -1,11 +1,11 @@
-Tuesdays tools and techniques for HPC
-======================================
+Tuesdays tools and techniques for HPC - Parallelization
+=======================================================
 
 .. warning::
 
    This is under construction.  The schedule is not final, please see
    the planning HackMD (not linked here, check on CodeRefinery chat)
-   for the current planning.
+   for the current planning. 
 
 .. admonition:: Course instance in April 2024
 
@@ -25,6 +25,11 @@ designed to be "fireside chat with experts", a combination of demos,
 type-along, and independent exercises.  You can engage at different
 levels, depending on your interest.
 
+In this lesson we will introduce the concept of embarassingly parallel 
+code, and how we can use this property to easily distribute heavy 
+computation to multiple processes without the necessity of falling back
+on mechanisms within the language. 
+
 .. prereq::
 
    * Basic HPC usage course (if you don't have, many of the things we
@@ -42,22 +47,24 @@ levels, depending on your interest.
    :widths: auto
    :delim: ;
 
-   xx min ; :doc:`laptop-to-cluster` Syncing workflows
-   xx min ; :doc:`sshfs`
-   xx min ; :doc:`interactive-work`
-   xx min ; :doc:`remote-kernels`
-   xx min ; :doc:`benchmarking`
-   xx min ; :doc:`monitoring-io`
-   xx min ; :doc:`container-and-archive-formats`
-   xx min ; :doc:`local-storage`
-   xx min ; :doc:`parallelizing-without-parallelizing`
-   xx min ; :doc:`automation`
+   10 min ; :doc:`motivation`
+   10 min ; :doc:`concepts`
+   10 min ; :doc:`code_adaptions`
+   20 min ; :doc:`array_jobs`
+   20 min ; :doc:`submission_by_script`
+   5 min ; :doc:`conclusions`
 
 
 .. toctree::
    :maxdepth: 1
    :caption: The lesson
 
+   motivation
+   concepts
+   code_adaptions
+   array_jobs
+   submission_by_script
+   conclusions
 
 .. toctree::
    :maxdepth: 1
@@ -65,7 +72,7 @@ levels, depending on your interest.
 
    quick-reference
    instructor-guide
-
+   exercises
 
 
 .. _learner-personas:
