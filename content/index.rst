@@ -47,11 +47,8 @@ on mechanisms within the language.
    :widths: auto
    :delim: ;
 
-   10 min ; :doc:`motivation`
-   10 min ; :doc:`concepts`
-   10 min ; :doc:`code_adaptions`
-   20 min ; :doc:`array_jobs`
-   20 min ; :doc:`submission_by_script`
+   90 min ; :doc:`parallelization/index`
+   60 min ; :doc:`workflowtools/index`
    5 min ; :doc:`conclusions`
 
 
@@ -60,10 +57,8 @@ on mechanisms within the language.
    :caption: The lesson
 
    motivation
-   concepts
-   code_adaptions
-   array_jobs
-   submission_by_script
+   parallelization/index
+   workflowtools/index
    conclusions
 
 .. toctree::

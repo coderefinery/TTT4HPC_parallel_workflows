@@ -49,9 +49,9 @@ save(res)
 ````{exercise} Parallel-1: Make the script accept an input index
 Our example is a very simple code which extracts cities for a country from a list of
 cities with their countries and writes a list of these cities.
-The data for the cities for this example are provided in the {download}`cities.csv <code/cities.csv>` file.
+The data for the cities for this example are provided in the {download}`cities.csv </code/cities.csv>` file.
 The code itself is provided {download}`here </code/python/long_code.py>`:
-```{literalinclude} code/python/long_code.py
+```{literalinclude} /code/python/long_code.py
     :language: python
 ```
 
@@ -66,7 +66,7 @@ The simplest solution is to use `sys.argv` taking in the first argument and conv
 it to an integer. You can also use more elaborate input parsers (see for example
 [this lecture about argument parsing](https://aaltoscicomp.github.io/python-for-scicomp/scripts/#parsing-command-line-arguments-with-argparse))
 
-```{literalinclude} code/python/long_code_for_index.py
+```{literalinclude} /code/python/long_code_for_index.py
     :language: python
     :emphasize-lines: 1, 30-37
 ```

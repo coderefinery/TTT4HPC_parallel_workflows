@@ -19,13 +19,13 @@ file with a given name, where all elements are given as command line arguments.
 `````{tabs}
 
    ````{group-tab} Python
-    ```{literalinclude} code/python/scan_code.py
+    ```{literalinclude} /code/python/scan_code.py
         :language: python
     ```
    ````
 
    ````{group-tab} R
-    ```{literalinclude} code/r/scan_code.r
+    ```{literalinclude} /code/r/scan_code.r
         :language: R
     ```
 
@@ -40,7 +40,7 @@ Lets say we want to run this with the following input parameter sets:
 
 we can do this in bash, but an easier way is to use the language we work in and build a general purpose submission script like this:
 
-```{literalinclude} code/slurm/submission.sh
+```{literalinclude} /code/slurm/submission.sh
     :language: slurm
 ```
 
@@ -51,7 +51,7 @@ submissions:
 `````{tabs}
 
    ````{group-tab} Python
-    ```{literalinclude} code/python/submission.py
+    ```{literalinclude} /code/python/submission.py
         :language: python
     ```
     You can run this code by running `python3 submission.py` and it will submit the
@@ -59,7 +59,7 @@ submissions:
    ````
 
    ````{group-tab} R
-    ```{literalinclude} code/r/submission.r
+    ```{literalinclude} /code/r/submission.r
         :language: R
     ```
     You can run this code by running `Rscript submission.r` and it will submit the
