@@ -1,5 +1,5 @@
-Embarassingly Parallel Problems
-===============================
+Pitfalls when parallelising code
+================================
 
 .. warning::
 
@@ -13,10 +13,10 @@ Embarassingly Parallel Problems
    <https://scicomp.aalto.fi/training/scip/workflows-2023/>`__.
    Dates are not yet known and registration is not yet open, though.
 
-This part of the lesson will introduce the concept of embarassingly parallel 
-code, and how we can use this property to easily distribute heavy 
-computation to multiple processes without the necessity of falling back
-on mechanisms within the language. 
+This part of the lesson will highlight common issues arising when parallelising 
+embarassingly parallel problems. We will discuss both issues that can arise when 
+running the same code multiple times at the same time as well as issues that arise 
+from excessive parallelisation. 
 
 .. prereq::
 
@@ -35,22 +35,12 @@ on mechanisms within the language.
    :widths: auto
    :delim: ;
 
-   10 min ; :doc:`motivation`
-   10 min ; :doc:`concepts`
-   10 min ; :doc:`code_adaptions`
-   20 min ; :doc:`array_jobs`
-   20 min ; :doc:`submission_by_script`
-   5 min ; :doc:`conclusions`
-
+   10 min ; :doc:`common_issues`
+   
 
 .. toctree::
    :maxdepth: 1
    :caption: The lesson
 
-   motivation
-   concepts
-   code_adaptions
-   array_jobs
-   submission_by_script
-   conclusions
+   common_issues
 

@@ -47,8 +47,9 @@ on mechanisms within the language.
    :widths: auto
    :delim: ;
 
-   90 min ; :doc:`parallelization/index`
-   60 min ; :doc:`workflowtools/index`
+   60 min ; :doc:`parallelization/index`   
+   30 min ; :doc:`workflowtools/index`
+   30 min ; :doc:`pitfalls/index`
    5 min ; :doc:`conclusions`
 
 
@@ -59,6 +60,7 @@ on mechanisms within the language.
    motivation
    parallelization/index
    workflowtools/index
+   pitfalls/index
    conclusions
 
 .. toctree::
