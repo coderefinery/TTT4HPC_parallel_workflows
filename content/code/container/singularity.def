@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: python:3.10.14-slim
+
+%post
+    # Install any needed dependencies specified in requirements.txt
+    pip install --no-cache-dir scikit-learn numpy pandas matplotlib
+
+    # Set the working directory in the container
+    mkdir -p /app
+    cd /app
+
+    # Copy the entry point script and make it executable
+    cat > /app/entrypoint.sh << EOF
+#!/bin/bash
+exec "\$@"
+EOF
+    chmod +x /app/entrypoint.sh

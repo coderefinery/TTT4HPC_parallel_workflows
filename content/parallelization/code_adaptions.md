@@ -1,10 +1,65 @@
 # Code Adaptions
 
 Even in an embarassingly parallel situation we will have to make a couple of adaptions to the code
-in order to be able to run parallel executions of our code.
+in order to be able to run parallel executions of our code. For this lecture we will be starting with
+a jupyter notebook that is based on the
+[Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html).
+
+## Convert the notebook to a python script
+
+The first step is to convert the notebook into a python script. This is rther simple and can be done in jupyter by going to:
+
+```
+"File" -> "Save and Export Notebook as..." -> "Executable Script"
+```
+
+The result of this conversion can be found [here](/code/python/scikit_example/knn_iris.py).
+
+### Split into a pre-processing and a execution script
+
+Our code has two distinct parts, a pre-processing part and a model generation and plotting part.
+The former part needs to be run exactly once (and actually shouldn't be run separately each time if we
+want) to compare the results, as the training/test split should be the same for all methods.
+Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
+This allows us to run the pre-processing once and in further steps always use the already pre-processed
+data avoiding unnecessary time.
+
+## Update code to run on a cluster
+
+To run the code on a cluster we will need two steps, first, we will need to create an environment in
+which the code can run. How you go about this depends on the cluster, but most clusters allow
+the use of containers, which is why we will be using a container for this example.
+
+### Build a container for dependencies
+
+We assume, that your cluster does have support for singularity. We provide both a singularity and
+docker definition file. The finished container can be found [here](TODO). Download the container on
+your cluser using:
+
+```bash
+# You might need to activate singularity depending on your cluster
+singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/parallel-workflow:latest
+```
+
+This build the singularity container based on the docker image we provide.
+
+### Create a slurm script to run the code
+
+We will need a slurm script to submit our job to the cluster queue. The script we will be using is the
+following:
+
+````
+```{literalinclude} /code/slurm/submit_job.sh
+    :language: slurm
+```
+````
+
+When this is done, we now have some code that runs on the cluster. This code will run all the different
+metrics neighbourhood sizes one after another.
 
 ## Updating the code to obtain input parameters
 
+Now, we need to update our code such, that it can run
 First off, we will need to allow the programm to receive input parameters that define which element(s)
 of the data have to be computed by this instance.
 
