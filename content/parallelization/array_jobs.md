@@ -24,8 +24,8 @@ the jobID and arrayID of the job respectively. The only difference in these jobs
 environment variable `SLURM_ARRAY_TASK_ID` which is set to the array id of the job
 and can be used to select what to calculate in this job.
 
-We can use this variable to tell our program which element to use in this job, done in the above example by passing the `$SLURM_ARRAY_TASK_ID` as the parameter argument for the
-program we run.
+We can use this variable to tell our program which element to use in this job, done in the above example
+by passing the `$SLURM_ARRAY_TASK_ID` as the parameter argument for the program we run.
 
 ## Exercise 1
 
@@ -67,5 +67,5 @@ either adapt your code or generate more complex logic within the batch submissio
 using bash commands. We will not go into the details of bash programming here, but if you
 are familiar this can be a convenient way to achieve more complex input parameters.
 
-In the next section we will show you an alternaive way to do this, which might be more
-convenient as it uses the language you commonly use to achieve the goal.
+In the next section we will show you an alternative way to do this, which might be more
+convenient as it uses the language you commonly use to achieve the same goal.

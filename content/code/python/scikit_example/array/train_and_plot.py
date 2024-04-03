@@ -1,6 +1,6 @@
 from pathlib import Path
 import pickle
-
+import argparse
 import matplotlib.pyplot as plt
 
 from sklearn.inspection import DecisionBoundaryDisplay
@@ -15,19 +15,34 @@ from sklearn.preprocessing import StandardScaler
 # - Fit a standard scaler + knn classifier pipeline
 # - Plot decision boundaries and save the image to disk
 
-# Load preprocessed data from disk FIXME
+# Load preprocessed data from disk
 with open("data/preprocessed/Iris.pkl", "rb") as f:
-    [X, X_train, X_test, y, y_train, y_test, classes, features] = pickle.loads(f, "wb")
+    data = pickle.loads(f)
+    X, X_train, X_test, y, y_train, y_test, features, classes = data
 
+
+# Parse arguments
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--param_index",
+    type=int,
+    help="Parameter settings ID to use from the parameter file.",
+)
+parser.add_argument(
+    "--param_file", type=str, help="Parameters file.", default="params.pkl"
+)
+args = parser.parse_args()
+with open(args.param_file, "rb") as f:
+    params = pickle.loads(f)
+param = params[args.param_index]
+n_neighbors = param["n_neighbors"]
 
 # Parameters
 # Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics
-n_neighbors_list = [1, 2, 4, 8, 16, 32, 64]
-metric = "euclidean"
+metrics = ["euclidean", "manhattan", "l1", "haversine", "cosine"]
 
 # Loop over n_neighbors
-for n_neighbors in n_neighbors_list:
-
+for metric in metrics:
     # Fit
     clf = Pipeline(
         steps=[

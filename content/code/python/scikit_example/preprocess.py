@@ -1,4 +1,5 @@
 import pickle
+import os
 
 import pandas as pd
 
@@ -48,7 +49,8 @@ y = label_encoder.transform(iris["Species"])
 classes = label_encoder.classes_
 # Divide randomly to train and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y)
-
+# create the data/preprocessed folder, if it does not exist yet
+os.makedirs("data/preprocessed", exist_ok=True)
 # Save to disk
 pickle.dumps(
     [X, X_train, X_test, y, y_train, y_test, classes, features],

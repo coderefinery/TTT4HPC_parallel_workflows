@@ -29,8 +29,7 @@ Imagine, you have a system with 4 cores and you have a program in python using s
 can use multiple cpus. If you don't paralellize, the multi-threading functions from numpy will use all 4 cores (if they can). Now imagine,
 that you use multiprocessing (a python library to parallelize code) to run 4 computations in parallel. If you don't take care, all
 4 computations will try to run multi-threaded copmutations which could interfere with each other, leading to a significant overhead
-for scheduling in the cpu. In a worst case scenario, this could actually slow down your computations in comparison to not using
-the multiprocessing library at all ( an example can be found `here <https://superfastpython.com/numpy-blas-multiprocessing/>`\_\_)
+the multiprocessing library at all ( an example can be found [here](https://superfastpython.com/numpy-blas-multiprocessing/))
 
 ## Moving the parallelization to the scheduler level
 
