@@ -28,8 +28,17 @@ In addition to these costs, there can be hidden side effects that can actually m
 Imagine, you have a system with 4 cores and you have a program in python using some numpy (a python math library) functions which
 can use multiple cpus. If you don't paralellize, the multi-threading functions from numpy will use all 4 cores (if they can). Now imagine,
 that you use multiprocessing (a python library to parallelize code) to run 4 computations in parallel. If you don't take care, all
-4 computations will try to run multi-threaded copmutations which could interfere with each other, leading to a significant overhead
-the multiprocessing library at all ( an example can be found [here](https://superfastpython.com/numpy-blas-multiprocessing/))
+4 computations will try to run multi-threaded copmutations which could interfere with each other, leading to a significant overhead in
+the multiprocessing library and the runtime actually getting worse ( an example can be found [here](https://superfastpython.com/numpy-blas-multiprocessing/))
+The following figures also show this issue.
+First, you have a function which runs some code 10 times in parallel, making use of all the cores on your system.
+![Parallel execution](../img/parallel_execution.svg)
+If you would patrallelize this code on the same machine, i.e. you don't have more CPU, you just run all parallel computations in parallel,
+you end up with a situation as follows:
+![Dual parallel execution](../img/dual_parallel_execution.svg)
+This obviously puts a burdon on the operating system to schedule all the concurrent calls, which will slow down the overall computation.
+Only if you can simultaneously add more cores to the computation, that are exclusivelu reserved for to each step in the for loop
+will your code actually run faster, otherwise it will run slower.
 
 ## Moving the parallelization to the scheduler level
 

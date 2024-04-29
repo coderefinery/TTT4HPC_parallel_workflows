@@ -37,9 +37,9 @@ on mechanisms within the language.
 
    10 min ; :doc:`motivation`
    10 min ; :doc:`concepts`
-   10 min ; :doc:`code_adaptions`
-   20 min ; :doc:`array_jobs`
-   20 min ; :doc:`submission_by_script`
+   5 min ; :doc:`array_jobs`
+   5 min ; :doc:`submission_by_script`
+   10 min ; :doc:`code_adaptions`   
    5 min ; :doc:`conclusions`
 
 
