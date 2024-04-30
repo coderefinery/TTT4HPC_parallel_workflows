@@ -57,7 +57,6 @@ on mechanisms within the language.
    :maxdepth: 1
    :caption: The lesson
 
-   motivation
    parallelization/index
    workflowtools/index
    pitfalls/index
