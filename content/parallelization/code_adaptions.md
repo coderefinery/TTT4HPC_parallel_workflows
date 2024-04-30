@@ -111,45 +111,51 @@ Using a custom submission script has the disadvantage, that you need to code it.
 jobs, you also cannot make use of notifications for the whole set of jobs. However, it has the advantage that you
 are more flexible in what kind of variables you want to post to your job.
 
-For this walkthrough, we will use a custom submission script, but we also give an example of how to do it with a slurm array
-job [here](array_jobs)
+For this walkthrough, we will use a custom submission script, but we also give an example of how to do it with a
+slurm array job [here](array_jobs)
 
-### Using Array jobs
+### Update the slurm scripts
 
-```{literalinclude} /code/python/scikit_example/array/create_parameter_array.py
+First, we need to separate the execution of the pre-processing from the actual calculations.
+This is to avoid having multiple jobs writing to the preprocessed data file at once and thus corrupting that file.
+The submission script for this is:
+
+```{literalinclude} /code/snakemake/scikit_example/submit_preprocess.sh
     :language: python
-    :emphasize-lines: 2, 24-38, 43
-
 ```
 
-This parameter creation script is computationally very undemanding and can likely be run on any login node, but you can also wrap it into a slurm job.
+Which is just the first part of our previous submission script.
+Once this script has completed successfully we want to run all the different neighbor options, and thus need a submission script, which allows setting those:
 
-### Update the slurm script
-
-We now have a two-step process, so we need to first do the pre-processing of our data in one job, which can be submitted using the following job:
-
-```{literalinclude} /code/slurm/scikit_example/submit_preprocess.sh
-    :language: slurm
-
+```{literalinclude} /code/snakemake/scikit_example/submission.sh
+    :language: python
+    :emphasize-lines: 7
 ```
 
-and then run the array job for our actual computation
+This script takes in one argument and passes it on to the `train_and_plot` script.
 
-```{literalinclude} /code/slurm/scikit_example/submit_parallel.sh
-    :language: slurm
-    :emphasize-lines: 3, 9
+### Build a submission script
 
-```
+Finally, we need to submit our job. This can be done using whatever language you prefer. Here, we give some examples:
 
-Note, that we use a sbatch array from 0 to 6, since we have 7 values in our neighbours array and python starts indexing from 0.
-There are two ways how you can submit these jobs and ensure, that they work properly:
+`````{tabs}
 
-- You can first submit the preprocess job, and wait till it finishes before submitting the computation
-  jobs
-- You can submit the preprocess jobs and directly submit the computing jobs giving the pre-processing job
-  as a dependency: `sbatch submit_parallel.sh --dependency=afterok:<job_id_of_the_preprocessing_task>`
-  Make sure, that you replace the job_id by your actual pre-processing job id, which you will be told,
-  when submitting the pre-processing job
+   ````{group-tab} Python
+    ```{literalinclude} /code/snakemake/scikit_example/submission.py
+        :language: python
+    ```
+    You can run this code by running `python3 submission.py` and it will submit the
+    submission.sh file to the slurm scheduler for each of your options.
+   ````
+
+   ````{group-tab} R
+    ```{literalinclude} /code/r/scikit_example/parameters/submission.r
+        :language: R
+    ```
+    You can run this code by running `Rscript submission.r` and it will submit the
+    submission.sh file to the slurm scheduler for each of your options.
+   ````
+`````
 
 ## Post processing steps
 
@@ -186,29 +192,28 @@ it instead of saving it again)
 
 ## Exercise 1
 
-````{exercise} Parallel-1: Make the script accept an input index
-Our example is a very simple code which extracts cities for a country from a list of
-cities with their countries and writes a list of these cities.
-The data for the cities for this example are provided in the {download}`cities.csv </code/cities.csv>` file.
-The code itself is provided {download}`here </code/python/long_code.py>`:
-```{literalinclude} /code/python/long_code.py
-    :language: python
+```{exercise} Parallel-1: Add the metrics as a parameter to the submission
+Let's assume that we noticed, that running all metrics still took too long for our purpose, and we also
+want to parallelize that part.
+You will need to update the `train_and_plot.py` script, the submission script and the sbatch script.
+
 ```
 
-Adapt the code, such that it takes an integer input and generates one country list
-for each integer input. In this instance, the order of execution is not important
-as one list per country will be produced.
-
-````
-
 ````{solution} Solution: Parallel-1
-The simplest solution is to use `sys.argv` taking in the first argument and converting
-it to an integer. You can also use more elaborate input parsers (see for example
-[this lecture about argument parsing](https://aaltoscicomp.github.io/python-for-scicomp/scripts/#parsing-command-line-arguments-with-argparse))
-
-```{literalinclude} /code/python/long_code_for_index.py
+We will need to remove the metrics loop from the `train_and_plot.py` script as follows and add a parser for it as follows:
+```{literalinclude} /code/snakemake/exercise/train_and_plot_with_metrics.py
     :language: python
-    :emphasize-lines: 1, 30-37
+    :emphasize-lines: 25-29,32,45-78
+```
+Then, we need to update the submission slurm script, adding a further parameter to it:
+```{literalinclude} /code/snakemake/exercise/submission_with_metrics.sh
+    :language: slurm
+    :emphasize-lines: 7
+```
+And finally, we need to update the submission python script to also use the metrics values:
+```{literalinclude} /code/snakemake/exercise/submission_with_metrics.py
+    :language: python
+    :emphasize-lines: 4,6,8
 ```
 
 ````
