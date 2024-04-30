@@ -3,7 +3,7 @@
 Even in an embarassingly parallel situation we will have to make a couple of adaptions to the code
 in order to be able to run parallel executions of our code. For this walkthrough we will be starting with
 a jupyter notebook that is based on the
-[Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html).
+[Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The notbook can be found [here](/code/jupyter/knn_iris.ipynb)
 
 ## Convert the notebook to a python script
 
@@ -18,36 +18,43 @@ The result of this conversion can be found [here](/code/python/scikit_example/kn
 ### Split into a pre-processing and a execution script
 
 Our code has two distinct parts, a pre-processing part and a model generation and plotting part.
-The former part needs to be run exactly once (and actually shouldn't be run separately each time if we
-want) to compare the results, as the training/test split should be the same for all methods.
+The former part needs to be run exactly once and actually shouldn't be run separately each time if we
+want to compare the results, as the training/test split should be the same for all methods.
 Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
 
-```{literalinclude} /code/python/scikit_example/preprocess.py
+````{toggle} preprocess.py
+   :class: dropdown
+   ```{literalinclude} /code/python/scikit_example/preprocess.py
     :language: python
+    :linenos:
     :emphasize-lines: 1-7, 53
-```
+    ```
+````
 
-We only include those imports necessary and make sure, that the data/preprocessed folder exists when we run the code
-
-```{literalinclude} /code/python/scikit_example/train_and_plot.py
-    :language: python
-    :emphasize-lines: 1-9
-```
-
+We only include those imports necessary and make sure, that the data/preprocessed folder exists when we run the code.
 This allows us to run the pre-processing once and in further steps always use the already pre-processed
 data avoiding unnecessary compute time if we e.g. want to change the metrics.
+
+````{toggle} train_and_plot.py
+   :class: dropdown
+    ```{literalinclude} /code/python/scikit_example/train_and_plot.py
+        :language: python
+        :emphasize-lines: 1-9
+    ```
+````
+
+For the training and plotting we again clean up the imports, and otherwise leave the code unchanged.
 
 ## Update code to run on a cluster
 
 To run the code on a cluster we will need two steps, first, we will need to create an environment in
-which the code can run. How you go about this depends on the cluster, but most clusters allow
-the use of containers, which is why we will be using a container for this example. In the second step, we need to execute our code on the cluster using the scheduler.
+which the code can run. How you go about this depends on the cluster. Most clusters allow
+the use of containers, which is why we will be using a container for this example.
+In the second step, we need to execute our code on the cluster using the scheduler.
 
 ### Build a container for dependencies
 
-We assume, that your cluster does have support for singularity. We provide both a singularity and
-docker definition file. The finished container can be found [here](TODO). Download the container on
-your cluser using:
+We assume, that your cluster does have support for singularity. We provide both a [singularity](/code/container/singularity.def) and [docker definition file](/code/container/Dockerfile)
 
 ```bash
 # You might need to activate singularity depending on your cluster
@@ -63,32 +70,51 @@ following:
 
 ```{literalinclude} /code/slurm/scikit_example/submit_job.sh
     :language: slurm
-
 ```
 
 When this is done, we now have some code that runs on the cluster. This code will run all the different
-metrics neighbourhood sizes one after another.
+metrics and neighbourhood sizes one after another.
 
 ## Updating the code for parallel execution (and flexibility)
 
-Slurm offers a type of job, called array job, which essentially runs the same lines of code multiple
-times. The only difference between one job and the next is a environment variable `SLURM_ARRAY_TASK_ID`.
-This variable is different and takes on the values given in the `--array` parameter provided to the job.
-Our code currently has hard coded input data and hard coded parameters. If we want to scan different
-parameters, we will always have to change our code. This means we have to adapt our code such, that we
-select the parameter based on some input to our code.
-In order to do so, we have to provide the parameters we want to supply to the model
-If we want to run different combinations in parallel, it would be preferable, if we can provide the data
-from some input argument. There are many options to do so, but we will use `argparse` in our example (some more details can be found [here](https://aaltoscicomp.github.io/python-for-scicomp/scripts/#parsing-command-line-arguments-with-argparse)).
+Working on a cluster allows us to run code simultaneously on multiple machines. However, we need to find a way to split
+our work into suitable pieces, in order to make use of this. If you look at lines 30-66 of our code,
+you will notice, that it essentially runs the same code for all possible metricies and neighborhood numbers.
+All of these runs are completely independent of each other, and could all be run at the same time.
+We will start by running all metricies for each of the neighbor counts in parallel. To do so, we need to make the neighbor
+count a parameter of the function, that we can then pass in.
+Currently, our code has hard coded parameters, which makes this a difficult task, so it would be good
+to convert it such, that it allows us to specify the parameters that we want to use as arguments.
+There are many options to do so, but we will use `argparse` in our example
+(some more details can be found [here](https://aaltoscicomp.github.io/python-for-scicomp/scripts/#parsing-command-line-arguments-with-argparse)).
 
 ```{literalinclude} /code/python/scikit_example/array/train_and_plot.py
     :language: python
-    :emphasize-lines: 2, 24-38, 43
-
+    :emphasize-lines: 3, 18-26, 37
 ```
 
-This file now reads in a parameter file (either a default one, or one that we provide) and extracts the
-`n_neighbours` parameter from that file. This file can be generated by the following script:
+This file now receives one parameter called n_neighbors and uses this to determine the number of neighbors to run the different metrics for.
+This also requires us to update the submission script, in order to allow passing in the neighbor count.
+There are two ways how this can be done.
+
+- Slurm Array jobs
+- Custom Submission scripts
+
+Slurm array jobs have the advantage of being an integral part of slurm, so you can use features like mail
+notification once the whole job is done. The difference between a "normal" job and an array job is that
+an arrayjob runs the same code multiple times with the only difference between the jobs being the `$SLURM_ARRAY_JOB_ID`
+variable. The values for the variable are defined in the submission script using the `--array` parameter, which can take
+either ranges (`--array=[0-3]`, four jobs with array id 0,1,2 and 3) or individual numbers (`--array=1,3,6` three jobs with id 1,3 and 6). However you can only use integer values for this, so if you need any other input, you will either need to
+convert the numbers in your code, or keep hard coded variable lists in your code, which makes it less flexible.
+
+Using a custom submission script has the disadvantage, that you need to code it. In addition, since it submits individual
+jobs, you also cannot make use of notifications for the whole set of jobs. However, it has the advantage that you
+are more flexible in what kind of variables you want to post to your job.
+
+For this walkthrough, we will use a custom submission script, but we also give an example of how to do it with a slurm array
+job [here](array_jobs)
+
+### Using Array jobs
 
 ```{literalinclude} /code/python/scikit_example/array/create_parameter_array.py
     :language: python
@@ -118,7 +144,7 @@ and then run the array job for our actual computation
 Note, that we use a sbatch array from 0 to 6, since we have 7 values in our neighbours array and python starts indexing from 0.
 There are two ways how you can submit these jobs and ensure, that they work properly:
 
-- You can first submit the preprocess job, and wait till it finishes before submitting the computation  
+- You can first submit the preprocess job, and wait till it finishes before submitting the computation
   jobs
 - You can submit the preprocess jobs and directly submit the computing jobs giving the pre-processing job
   as a dependency: `sbatch submit_parallel.sh --dependency=afterok:<job_id_of_the_preprocessing_task>`
