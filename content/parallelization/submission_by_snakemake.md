@@ -1,9 +1,22 @@
 # Submission by Snakemake
 
-We have now seen how to parallelize code using a script which loops over parameters (or parameter combinations) and 
-submits a job for each one correspondingly. This approach is convenient and generalizes well to different types and numbers of parameters (integers, floats, text, etc.)
-and their combinations. However, adding new parameter values to a script and resubmitting will inconveniently run not only the new parameters but also all the previous parameter-specific jobs. This is unnecessary work and can be avoided by using a workflow manager tool which checks if some of all of the expected result files already exist on the disk and skips rerunning jobs accordingly.
-In what follows, we will look at one such workflow manager, namely, Snakemake.
+We have now seen how to parallelize code using a script which loops over parameters and 
+submits a job for each one correspondingly. This approach allows reusable code and generalizes 
+well to different types and numbers of parameters (integers, floats, text, etc.)
+and their combinations. However, adding new parameter values to a script and resubmitting
+will inconveniently run not only the new parameters but also all the previous
+parameter-specific jobs. This unnecessary work can be avoided using a workflow
+manager tool which checks if some of all of the expected result files already exist on
+the disk and only runs jobs needed to produce the missing results. As a downside, using a workflow manager
+will require learning intricacies of yet another tool and further modifying 
+the project structure accordingly. In what follows, we will look at one such workflow 
+manager tool, namely, Snakemake.
+
+TODO: Snakemake general project structure
+
+TODO: Writing the Snakefile
+
+Which one first?
 
 
 
