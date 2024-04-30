@@ -88,7 +88,7 @@ to convert it such, that it allows us to specify the parameters that we want to 
 There are many options to do so, but we will use `argparse` in our example
 (some more details can be found [here](https://aaltoscicomp.github.io/python-for-scicomp/scripts/#parsing-command-line-arguments-with-argparse)).
 
-```{literalinclude} /code/python/scikit_example/array/train_and_plot.py
+```{literalinclude} /code/python/scikit_example/parameters/train_and_plot.py
     :language: python
     :emphasize-lines: 3, 18-26, 37
 ```
@@ -121,14 +121,14 @@ This is to avoid having multiple jobs writing to the preprocessed data file at o
 The submission script for this is:
 
 ```{literalinclude} /code/snakemake/scikit_example/submit_preprocess.sh
-    :language: python
+    :language: slurm
 ```
 
 Which is just the first part of our previous submission script.
 Once this script has completed successfully we want to run all the different neighbor options, and thus need a submission script, which allows setting those:
 
 ```{literalinclude} /code/snakemake/scikit_example/submission.sh
-    :language: python
+    :language: slurm
     :emphasize-lines: 7
 ```
 
