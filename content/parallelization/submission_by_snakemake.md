@@ -8,15 +8,16 @@ will inconveniently run not only the new parameters but also all the previous
 parameter-specific jobs. This unnecessary work can be avoided using a workflow
 manager tool which checks if some of all of the expected result files already exist on
 the disk and only runs jobs needed to produce the missing results. As a downside, using a workflow manager
-will require learning intricacies of yet another tool and further modifying 
-the project structure accordingly. In what follows, we will look at one such workflow 
+will require learning intricacies. In what follows, we will look at one such workflow 
 manager tool, namely, Snakemake.
+
+
 
 TODO: Snakemake general project structure
 
 TODO: Writing the Snakefile
 
-Which one first?
+Which one first? 
 
 
 
