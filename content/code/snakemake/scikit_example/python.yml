@@ -1,0 +1,8 @@
+name: ttt4hpc_python
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - scikit-learn
+  - pandas
+  - matplotlib

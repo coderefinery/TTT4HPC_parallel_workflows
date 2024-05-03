@@ -1,0 +1,29 @@
+N_NEIGHBORS_LIST = range(1, 11)
+METRIC_LIST = ["cityblock", "cosine", "euclidean", "haversine", "l1", "l2", "manhattan", "nan_euclidean"]
+
+
+# Final output files
+rule all:
+    input:
+        expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRIC_LIST)
+
+
+# Rule to produce the output files for parameter combinations
+rule fit_plot:
+    input:
+        "data/preprocessed/Iris.pkl"
+    output:
+        "results/n_neighbors={n_neighbors}___metric={metric}.png"
+    shell:
+        "python workflow/scripts/fit_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
+        
+
+# Rule to preprocess the data
+rule preprocess:
+    input:
+        "data/Iris.csv"
+    output:
+        "data/preprocessed/Iris.pkl"
+    shell:
+        "python workflow/scripts/preprocess_data.py --input-file {input} --output-file {output}"
+ 

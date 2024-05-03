@@ -1,6 +1,10 @@
+# Snakemake will first pull the defined container image, and then create the requested 
+# conda environments from within the container. The conda environments will be stored 
+# in the working environment. 
+container: "docker://continuumio/miniconda3:4.4.10"
+
 N_NEIGHBORS_LIST = range(1, 11)
 METRIC_LIST = ["cityblock", "cosine", "euclidean", "haversine", "l1", "l2", "manhattan", "nan_euclidean"]
-
 
 # Final output files
 rule all:
@@ -8,16 +12,16 @@ rule all:
         expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRIC_LIST)
 
 
-# Rule to produce the output files for parameter combinations
-rule fit_plot:
+# Rule to produce the output files for parameter combinations.
+rule train_plot:
     input:
         "data/preprocessed/Iris.pkl"
     output:
         "results/n_neighbors={n_neighbors}___metric={metric}.png"
     conda:
-        "envs/python.yml"
+        "python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
-        "python workflow/scripts/fit_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
+        "python src/train_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
         
 
 # Rule to preprocess the data
@@ -27,7 +31,7 @@ rule preprocess:
     output:
         "data/preprocessed/Iris.pkl"
     conda:
-        "envs/python.yml"
+        "python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
-        "python workflow/scripts/preprocess_data.py --input-file {input} --output-file {output}"
+        "python src/preprocess_data.py --input-file {input} --output-file {output}"
  
