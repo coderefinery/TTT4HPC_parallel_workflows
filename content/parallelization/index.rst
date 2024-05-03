@@ -39,6 +39,7 @@ on mechanisms within the language.
    10 min ; :doc:`concepts`
    5 min ; :doc:`array_jobs`
    5 min ; :doc:`submission_by_script`
+   ? min ; :doc:`parallelize_using_snakemake`
    10 min ; :doc:`code_adaptions`   
    5 min ; :doc:`conclusions`
 
@@ -52,5 +53,6 @@ on mechanisms within the language.
    code_adaptions
    array_jobs
    submission_by_script
+   parallelize_using_snakemake
    conclusions
 
