@@ -16,7 +16,7 @@ rule all:
 # Rule to produce the output files for parameter combinations.
 rule train_plot:
     resources:
-        "tmpdir": "./tmp"
+        tmpdir="./tmp"
     input:
         "data/preprocessed/Iris.pkl"
     output:
@@ -30,7 +30,7 @@ rule train_plot:
 # Rule to preprocess the data
 rule preprocess:
     resources:
-        "tmpdir": "./tmp"
+        tmpdir="./tmp"
     input:
         "data/Iris.csv"
     output:
