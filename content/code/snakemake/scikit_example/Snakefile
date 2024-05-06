@@ -19,7 +19,7 @@ rule train_plot:
     output:
         "results/n_neighbors={n_neighbors}___metric={metric}.png"
     conda:
-        "python.yml" # Rule train_plot will use the conda environment defined in python.yml
+        "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
         "python src/train_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
         
@@ -31,7 +31,7 @@ rule preprocess:
     output:
         "data/preprocessed/Iris.pkl"
     conda:
-        "python.yml" # Rule train_plot will use the conda environment defined in python.yml
+        "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
         "python src/preprocess_data.py --input-file {input} --output-file {output}"
  

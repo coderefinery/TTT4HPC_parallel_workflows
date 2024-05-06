@@ -17,7 +17,7 @@ Given a Snakefile, Snakemake then detects in which order the steps need to be ru
 steps of the workflow can be run in parallel. Snakemake also checks if some of the expected 
 result files already exist on the disk and only runs jobs needed to produce the missing results. 
 
-A Snakefile corresponding to the submission script:
+A Snakefile producing the same output files as the submission script:
 
 ```{literalinclude} /code/snakemake/scikit_example/Snakefile
     :language: python
