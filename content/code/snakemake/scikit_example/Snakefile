@@ -2,7 +2,7 @@
 # conda environments from within the container. The conda environments will be stored 
 # in the working environment. 
 # container: "docker://continuumio/miniconda3:4.4.10"
-container : "docker://condaforge/mambaforge:latest"
+container: "docker://condaforge/mambaforge:latest"
 
 §N_NEIGHBORS_LIST = range(1, 11)
 METRIC_LIST = ["cityblock", "cosine", "euclidean", "haversine", "l1", "l2", "manhattan", "nan_euclidean"]
