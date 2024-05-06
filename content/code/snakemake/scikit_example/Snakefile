@@ -22,7 +22,7 @@ rule train_plot:
     conda:
         "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
-        "python src/train_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
+        "python train_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
     resources:
         "tmpdir": "./tmp"
 
@@ -36,7 +36,7 @@ rule preprocess:
     conda:
         "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
-        "python src/preprocess_data.py --input-file {input} --output-file {output}"
+        "python preprocess_data.py --input-file {input} --output-file {output}"
     resources:
         "tmpdir": "./tmp"
  
