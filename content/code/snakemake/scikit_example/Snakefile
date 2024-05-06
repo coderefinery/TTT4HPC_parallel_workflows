@@ -1,9 +1,10 @@
 # Snakemake will first pull the defined container image, and then create the requested 
 # conda environments from within the container. The conda environments will be stored 
 # in the working environment. 
-container: "docker://continuumio/miniconda3:4.4.10"
+# container: "docker://continuumio/miniconda3:4.4.10"
+container : "docker://condaforge/mambaforge:latest"
 
-N_NEIGHBORS_LIST = range(1, 11)
+§N_NEIGHBORS_LIST = range(1, 11)
 METRIC_LIST = ["cityblock", "cosine", "euclidean", "haversine", "l1", "l2", "manhattan", "nan_euclidean"]
 
 # Final output files
