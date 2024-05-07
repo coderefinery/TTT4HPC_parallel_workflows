@@ -58,6 +58,7 @@ for metric in metrics:
         alpha=0.5,
     )
     scatter = disp.ax_.scatter(X.iloc[:, 0], X.iloc[:, 1], c=y, edgecolors="k")
+    print(scatter.legend_elements())
     disp.ax_.legend(
         scatter.legend_elements()[0],
         classes,
