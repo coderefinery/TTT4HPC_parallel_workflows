@@ -5,12 +5,11 @@
 container: "docker://condaforge/mambaforge:latest"
 
 N_NEIGHBORS_LIST = range(1, 11)
-METRIC_LIST = ["cityblock", "cosine", "euclidean", "haversine", "l1", "l2", "manhattan", "nan_euclidean"]
 
 # Final output files
 rule all:
     input:
-        expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRIC_LIST)
+        expand("results/n_neighbors={n_neighbors}.png", n_neighbors=N_NEIGHBORS_LIST)
 
 
 # Rule to produce the output files for parameter combinations.
@@ -20,11 +19,11 @@ rule train_and_plot:
     input:
         "data/preprocessed/Iris.pkl"
     output:
-        "results/n_neighbors={n_neighbors}___metric={metric}.png"
+        "results/n_neighbors={n_neighbors}.png"
     conda:
-        "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
+        "envs/python.yml"
     shell:
-        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
+        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors}"
 
 
 # Rule to preprocess the data
@@ -36,7 +35,7 @@ rule preprocess:
     output:
         "data/preprocessed/Iris.pkl"
     conda:
-        "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
+        "envs/python.yml"
     shell:
         "python preprocess_data.py --input-file {input} --output-file {output}"
  
