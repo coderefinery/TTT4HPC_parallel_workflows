@@ -9,13 +9,13 @@ rule all:
 
 
 # Rule to produce the output files for parameter combinations
-rule fit_plot:
+rule train_and_plot:
     input:
         "data/preprocessed/Iris.pkl"
     output:
         "results/n_neighbors={n_neighbors}___metric={metric}.png"
     shell:
-        "python workflow/scripts/fit_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
+        "python workflow/scripts/train_and_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
         
 
 # Rule to preprocess the data

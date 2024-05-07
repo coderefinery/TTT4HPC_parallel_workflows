@@ -14,7 +14,7 @@ rule all:
 
 
 # Rule to produce the output files for parameter combinations.
-rule train_plot:
+rule train_and_plot:
     resources:
         tmpdir="./tmp"
     input:
@@ -24,7 +24,7 @@ rule train_plot:
     conda:
         "envs/python.yml" # Rule train_plot will use the conda environment defined in python.yml
     shell:
-        "python train_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
+        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric}"
 
 
 # Rule to preprocess the data

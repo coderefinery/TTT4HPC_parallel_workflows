@@ -36,4 +36,4 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_sta
 
 # Save to disk
 Path("data/preprocessed").mkdir(exist_ok=True)
-pickle.dumps([X, X_train, X_test, y, y_train, y_test, features, label_encoder], open("data/preprocessed/Iris.pkl", "wb"))
+pickle.dump([X, X_train, X_test, y, y_train, y_test, features, label_encoder], open("data/preprocessed/Iris.pkl", "wb"))
