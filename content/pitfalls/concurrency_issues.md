@@ -1,12 +1,9 @@
-# Common issues
+# Concurrency issues
 
-By running several computations in parallel we place a few more constraints on what we can
-or cannot do, resulting in concurrency issues. In a non parallel situation we commonly
-do not need to pay attention to what the resources are accessed by the code. This is different
-when the code runs in parallel. There are also additional considerations as to overheads
-which need to be taken into consideration.
+Probably the most common issues when running embarassingly, or in general parallel computations, arises due to concurrency issuees, where multiple threads try to modify the same source or the same element.
+Here, we will give some examples of issue sthat can arise
 
-## Concurrency issues
+## Concurrent File Access
 
 Let's take the following piece of code:
 
@@ -61,7 +58,7 @@ filesystem doesn't complain about it...
 
 So, an important thing to keep in mind is to have the parallelized code really be independent
 of other instances. In most cases this means, using index specific output files and having a
-"collection script" that combines the data after the jobs are complete. This can even be done with slurm internal methods:
+"collection script" that combines the data after the jobs are complete. This can even be done with slurm internal methods if you use an array job:
 
 ```slurm
 #!/bin/bash
@@ -72,6 +69,7 @@ of other instances. In most cases this means, using index specific output files 
 python collection.py
 ```
 
+If you use a submission script you would ned to list all jobs in the dependency part, at which point it likely is easier to just wait for completion and then manually do the collection.
 The above case would then become something like:
 
 Calculation script:
@@ -161,3 +159,13 @@ lead to results that were completely unreliable. The user was lucky that some of
 actually errored out with a very strange error and they had to re-run all of their runs as
 none were reliable. And these things can even be hidden within some libraries, which expect to
 only be used in one process at a time and e.g. write some temporary files to home folders.
+
+## Concurrent database access
+
+Often using a database handled by a server protects against the problems described above, since the database
+server is developed to processes multiple different requests simultaneously and avoid concurrent modifications
+of entries in the database. However, this only applies to databases which are handled by an explicit server running
+in its own process.
+However, using such a server can also lead to a bottleneck, where jobs block execution because they are waiting for
+the server to handle their request. While commonly less problematic, this can potentially lead to an unexpected  
+decrease in performance.

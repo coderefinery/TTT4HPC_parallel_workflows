@@ -27,7 +27,7 @@ n_neighbors = args.n_neighbors
 
 # Load preprocessed data from disk
 with open("data/preprocessed/Iris.pkl", "rb") as f:
-    data = pickle.loads(f)
+    data = pickle.load(f)
     X, X_train, X_test, y, y_train, y_test, features, classes = data
 
 
@@ -72,3 +72,4 @@ for metric in metrics:
     # Save image to disk
     Path("results/").mkdir(parents=True, exist_ok=True)
     plt.savefig(f"results/n_neighbors={n_neighbors}___metric={metric}.png")
+    plt.close()

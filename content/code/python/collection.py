@@ -13,4 +13,4 @@ for filename in os.listdir(folder_path):
             data_array.insert(index, pickle.load(f))
 
 with open(file_path, "wb") as f:
-    pickle.dumps(data_array, f)
+    pickle.dump(data_array, f)

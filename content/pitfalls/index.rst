@@ -13,10 +13,12 @@ Pitfalls when parallelising code
    <https://scicomp.aalto.fi/training/scip/workflows-2023/>`__.
    Dates are not yet known and registration is not yet open, though.
 
-This part of the lesson will highlight common issues arising when parallelising 
-embarassingly parallel problems. We will discuss both issues that can arise when 
-running the same code multiple times at the same time as well as issues that arise 
-from excessive parallelisation. 
+By running several computations in parallel we place a few more constraints on what we can
+or cannot do, resulting in concurrency issues. In a non parallel situation we commonly
+do not need to pay attention to what the resources are accessed by the code. This is different
+when the code runs in parallel. There are also additional considerations as to overheads
+which need to be taken into consideration.
+
 
 .. prereq::
 
@@ -35,12 +37,14 @@ from excessive parallelisation.
    :widths: auto
    :delim: ;
 
-   10 min ; :doc:`common_issues`
+   5 min ; :doc:`concurrency_issues`
+   5 min ; :doc:`os_side`
    
 
 .. toctree::
    :maxdepth: 1
    :caption: The lesson
 
-   common_issues
+   concurrency_issues
+   os_side
 

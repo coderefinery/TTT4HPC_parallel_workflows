@@ -25,9 +25,9 @@ Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
 ````{toggle} preprocess.py
    :class: dropdown
    ```{literalinclude} /code/python/scikit_example/preprocess.py
-    :language: python
-    :linenos:
-    :emphasize-lines: 1-7, 53
+      :language: python
+      :linenos:
+      :emphasize-lines: 1-7, 53
     ```
 ````
 
@@ -58,10 +58,10 @@ We assume, that your cluster does have support for singularity. We provide both 
 
 ```bash
 # You might need to activate singularity depending on your cluster
-singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/parallel-workflow:latest
+singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest
 ```
 
-This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our [Container Lecture](TODO)
+This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our [Container Lecture](https://coderefinery.github.io/ttt4hpc_containers/)
 
 ### Create a slurm script to run the code
 
@@ -213,7 +213,7 @@ Then, we need to update the submission slurm script, adding a further parameter 
 And finally, we need to update the submission python script to also use the metrics values:
 ```{literalinclude} /code/snakemake/exercise/submission_with_metrics.py
     :language: python
-    :emphasize-lines: 4,6,8
+    :emphasize-lines: 4,6,7
 ```
 
 ````
