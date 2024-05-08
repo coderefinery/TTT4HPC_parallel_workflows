@@ -61,7 +61,7 @@ We assume, that your cluster does have support for singularity. We provide both 
 singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest
 ```
 
-This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our [Container Lecture](TODO)
+This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our [Container Lecture](https://coderefinery.github.io/ttt4hpc_containers/)
 
 ### Create a slurm script to run the code
 
