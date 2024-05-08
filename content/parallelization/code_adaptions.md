@@ -25,9 +25,9 @@ Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
 ````{toggle} preprocess.py
    :class: dropdown
    ```{literalinclude} /code/python/scikit_example/preprocess.py
-    :language: python
-    :linenos:
-    :emphasize-lines: 1-7, 53
+      :language: python
+      :linenos:
+      :emphasize-lines: 1-7, 53
     ```
 ````
 
@@ -213,7 +213,7 @@ Then, we need to update the submission slurm script, adding a further parameter 
 And finally, we need to update the submission python script to also use the metrics values:
 ```{literalinclude} /code/snakemake/exercise/submission_with_metrics.py
     :language: python
-    :emphasize-lines: 4,6,8
+    :emphasize-lines: 4,6,7
 ```
 
 ````
