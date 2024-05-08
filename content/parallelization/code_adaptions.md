@@ -58,7 +58,7 @@ We assume, that your cluster does have support for singularity. We provide both 
 
 ```bash
 # You might need to activate singularity depending on your cluster
-singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/parallel-workflow:latest
+singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest
 ```
 
 This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our [Container Lecture](TODO)
