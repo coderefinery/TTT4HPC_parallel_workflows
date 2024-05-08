@@ -1,4 +1,4 @@
-# Parallelize using Snakemake
+# Parallelize using Workflow Manager
 
 We have now seen how to parallelize code using a script which loops over parameters and 
 submits a job for each one correspondingly. This approach allows reusable code and generalizes 
