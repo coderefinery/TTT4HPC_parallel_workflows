@@ -24,7 +24,7 @@ Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
 
 ````{toggle} preprocess.py
    :class: dropdown
-   ```{literalinclude} /code/python/scikit_example/preprocess.py
+   ```{literalinclude} /code/snakemake/scikit_example/preprocess.py
       :language: python
       :linenos:
       :emphasize-lines: 1-7, 53
