@@ -72,3 +72,4 @@ for metric in metrics:
     # Save image to disk
     Path("results/").mkdir(parents=True, exist_ok=True)
     plt.savefig(f"results/n_neighbors={n_neighbors}___metric={metric}.png")
+    plt.close()

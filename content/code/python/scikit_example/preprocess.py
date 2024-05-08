@@ -1,11 +1,9 @@
+from pathlib import Path
 import pickle
-import os
 
-import pandas as pd
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from sklearn import datasets
+from sklearn.datasets import load_iris
 
 
 # ## Preprocess data
@@ -38,23 +36,24 @@ from sklearn import datasets
 
 # Load preprocessed data from disk
 
-iris = datasets.load_iris()
+
+# Load data from sklearn datasets
+iris = load_iris(as_frame=True)
 
 # Extract two features
-features = ["SepalLengthCm", "SepalWidthCm"]
-X = iris[features]
+features = ["sepal length (cm)", "sepal width (cm)"]
+X = iris.data[features]
 
-# Map the class labels
-label_encoder = LabelEncoder()
-label_encoder.fit(iris["Species"])
-y = label_encoder.transform(iris["Species"])
-classes = label_encoder.classes_
+# Class labels
+classes = iris.target_names
+y = iris.target
+
 # Divide randomly to train and test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y)
-# create the data/preprocessed folder, if it does not exist yet
-os.makedirs("data/preprocessed", exist_ok=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=0)
+
 # Save to disk
+Path("data/preprocessed").mkdir(exist_ok=True)
 pickle.dump(
-    [X, X_train, X_test, y, y_train, y_test, classes, features],
+    [X, X_train, X_test, y, y_train, y_test, features, classes],
     open("data/preprocessed/Iris.pkl", "wb"),
 )

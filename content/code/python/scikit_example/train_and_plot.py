@@ -15,11 +15,10 @@ from sklearn.preprocessing import StandardScaler
 # - Fit a standard scaler + knn classifier pipeline
 # - Plot decision boundaries and save the image to disk
 
-# Load preprocessed data from disk FIXME
+# Load preprocessed data from disk
 with open("data/preprocessed/Iris.pkl", "rb") as f:
     data = pickle.load(f)
     X, X_train, X_test, y, y_train, y_test, features, classes = data
-
 
 # Parameters
 # Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics
@@ -60,7 +59,7 @@ for n_neighbors in n_neighbors_list:
             f"3-Class classification\n(k={n_neighbors!r}, metric={metric!r})"
         )
         plt.show()
-
         # Save image to disk
         Path("results/").mkdir(parents=True, exist_ok=True)
         plt.savefig(f"results/n_neighbors={n_neighbors}___metric={metric}.png")
+        plt.close()
