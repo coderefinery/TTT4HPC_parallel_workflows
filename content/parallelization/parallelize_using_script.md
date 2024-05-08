@@ -1,4 +1,4 @@
-# Example Walkthrough
+# Parallelize using Script
 
 Even in an embarassingly parallel situation we will have to make a couple of adaptions to the code
 in order to be able to run parallel executions of our code. For this walkthrough we will be starting with

@@ -37,7 +37,7 @@ on mechanisms within the language.
 
    10 min ; :doc:`motivation`
    10 min ; :doc:`concepts`
-   30 min ; :doc:`code_adaptions`   
+   30 min ; :doc:`parallelize_using_script`   
    10 min ; :doc:`array_jobs`
    5 min ; :doc:`conclusions`
 
@@ -48,7 +48,7 @@ on mechanisms within the language.
 
    motivation
    concepts
-   code_adaptions
+   parallelize_using_script
    array_jobs
    conclusions
 
