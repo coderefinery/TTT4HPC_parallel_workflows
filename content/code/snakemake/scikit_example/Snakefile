@@ -1,0 +1,41 @@
+# Snakemake will first pull the defined container image, and then create the requested 
+# conda environments from within the container. The conda environments will be stored 
+# in the working environment. 
+# container: "docker://continuumio/miniconda3:4.4.10"
+container: "docker://condaforge/mambaforge:latest"
+
+N_NEIGHBORS_LIST = range(1, 11)
+
+# Final output files
+rule all:
+    input:
+        expand("results/n_neighbors={n_neighbors}.png", n_neighbors=N_NEIGHBORS_LIST)
+
+
+# Rule to produce the output files for parameter combinations.
+rule train_and_plot:
+    resources:
+        tmpdir="./tmp"
+    input:
+        "data/preprocessed/Iris.pkl"
+    output:
+        "results/n_neighbors={n_neighbors}.png"
+    conda:
+        "envs/python.yml"
+    shell:
+        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors}"
+
+
+# Rule to preprocess the data
+rule preprocess:
+    resources:
+        tmpdir="./tmp"
+    input:
+        "data/Iris.csv"
+    output:
+        "data/preprocessed/Iris.pkl"
+    conda:
+        "envs/python.yml"
+    shell:
+        "python preprocess_data.py --input-file {input} --output-file {output}"
+ 
