@@ -7,4 +7,4 @@ for i in range(len(data)):
     res.append(calculate(data[i]))
 
 with open("results", "wb") as f:
-    pickle.dumps(res, "results")
+    pickle.dump(res, "results")

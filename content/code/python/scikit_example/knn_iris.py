@@ -49,6 +49,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 
+from sklearn import datasets
 
 # ## Preprocess data
 #
@@ -82,9 +83,9 @@ from sklearn.preprocessing import StandardScaler
 
 
 # Load preprocessed data from disk
-iris = pd.read_csv("data/Iris.csv")
-display(iris.head())
-display(iris.tail())
+
+
+iris = datasets.load_iris()
 
 # Extract two features
 features = ["SepalLengthCm", "SepalWidthCm"]
@@ -99,7 +100,7 @@ y = label_encoder.transform(iris["Species"])
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y)
 
 # Save to disk
-pickle.dumps(
+pickle.dump(
     [X, X_train, X_test, y, y_train, y_test], open("data/preprocessed/Iris.pkl", "wb")
 )
 
@@ -115,9 +116,7 @@ pickle.dumps(
 
 
 # Load preprocessed data from disk FIXME
-iris = pd.read_csv("data/Iris.csv")
-display(iris.head())
-display(iris.tail())
+iris = pickle.load("data/preprocessed/Iris.pkl")
 
 
 # Parameters

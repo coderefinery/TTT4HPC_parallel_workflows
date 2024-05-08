@@ -17,7 +17,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Load preprocessed data from disk
 with open("data/preprocessed/Iris.pkl", "rb") as f:
-    data = pickle.loads(f)
+    data = pickle.load(f)
     X, X_train, X_test, y, y_train, y_test, features, classes = data
 
 
@@ -33,7 +33,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 with open(args.param_file, "rb") as f:
-    params = pickle.loads(f)
+    params = pickle.load(f)
 param = params[args.param_index]
 n_neighbors = param["n_neighbors"]
 

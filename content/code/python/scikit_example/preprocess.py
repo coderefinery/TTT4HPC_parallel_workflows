@@ -5,6 +5,7 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from sklearn import datasets
 
 
 # ## Preprocess data
@@ -36,7 +37,8 @@ from sklearn.preprocessing import LabelEncoder
 # Save the preprocessed data to disk.
 
 # Load preprocessed data from disk
-iris = pd.read_csv("data/Iris.csv")
+
+iris = datasets.load_iris()
 
 # Extract two features
 features = ["SepalLengthCm", "SepalWidthCm"]
@@ -52,7 +54,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y)
 # create the data/preprocessed folder, if it does not exist yet
 os.makedirs("data/preprocessed", exist_ok=True)
 # Save to disk
-pickle.dumps(
+pickle.dump(
     [X, X_train, X_test, y, y_train, y_test, classes, features],
     open("data/preprocessed/Iris.pkl", "wb"),
 )

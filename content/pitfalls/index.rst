@@ -45,5 +45,6 @@ which need to be taken into consideration.
    :maxdepth: 1
    :caption: The lesson
 
-   common_issues
+   concurrency_issues
+   os_side
 

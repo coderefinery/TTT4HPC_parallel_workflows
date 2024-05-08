@@ -17,7 +17,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Load preprocessed data from disk FIXME
 with open("data/preprocessed/Iris.pkl", "rb") as f:
-    data = pickle.loads(f)
+    data = pickle.load(f)
     X, X_train, X_test, y, y_train, y_test, features, classes = data
 
 

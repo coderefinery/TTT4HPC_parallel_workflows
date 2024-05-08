@@ -27,7 +27,7 @@ n_neighbors = args.n_neighbors
 
 # Load preprocessed data from disk
 with open("data/preprocessed/Iris.pkl", "rb") as f:
-    data = pickle.loads(f)
+    data = pickle.load(f)
     X, X_train, X_test, y, y_train, y_test, features, classes = data
 
 
