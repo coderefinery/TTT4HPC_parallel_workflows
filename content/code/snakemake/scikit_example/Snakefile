@@ -21,7 +21,7 @@ rule train_and_plot:
     conda:
         "envs/environment.yml"
     log: 
-        out: "logs/{rule}/n_neighbors={n_neighbors}.log"
+        out="logs/{rule}/n_neighbors={n_neighbors}.log"
     shell:
         "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} 1> {log.out} 2> {log.out}"
 
