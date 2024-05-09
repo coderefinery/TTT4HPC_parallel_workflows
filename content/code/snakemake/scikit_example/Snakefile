@@ -21,7 +21,7 @@ rule train_and_plot:
     conda:
         "envs/environment.yml"
     log: 
-        "logs/{rule}/{wildcards}.log"
+        "logs/{rule}/n_neighbors={n_neighbors}.log"
     shell:
         "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} 1> {log} 2> {log}"
 
@@ -35,7 +35,7 @@ rule preprocess_data:
     conda:
         "envs/environment.yml"
     log: 
-        "logs/{rule}/{wildcards}.log"
+        "logs/{rule}/{rule}.log"
     shell:
         "python preprocess_data.py --input-file {input} --output-file {output} 1> {log} 2> {log}"
  
