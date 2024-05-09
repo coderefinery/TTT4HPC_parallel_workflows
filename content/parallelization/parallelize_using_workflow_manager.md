@@ -35,16 +35,17 @@ A profile file defining the same computational resources as the
 Run Snakemake with
 
 ```
-snakemake --snakefile Snakefile --profile profiles/slurm --software-deployment-method apptainer conda
+snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-method apptainer conda
+
 ```
 
 What happens:
 
 1. Snakemake infers from `workflow/Snakefile` that the required input files specified in rule "All" can be created using the rule "plot_decision_boundaries" in an embarassingly parallel manner. (Note that input files of the rule "All" are our target output files.)
 
-2. The profile configuration specified in `profiles/slurm/config.yaml` tells Snakemake to submit the jobs to Slurm and to request the specified resources (cpus, memory, runtime, etc.). The resources can be specified for each rule individually.
+2. Snakemake looks for profile configuration file `config.yml` in the given path `profiles/slurm/`. The profile tells Snakemake to submit the jobs to Slurm and to request specific resources (cpus, memory, runtime, etc.). The resources can be specified for each rule individually.
 
-3. The option `--software-deployment-method` tells Snakemake to create the environments in which to the rules are run using apptainer and conda.
+3. The option `--software-deployment-method` tells Snakemake to create the environments in which the rules are run using apptainer and conda.
 
 4. The option `--use-conda` tells Snakemake to look for Conda/Mamba environments in `.snakemake/conda/` for the rule "plot_decision_boundaries". These environments will be created if they do not exist yet.
 
