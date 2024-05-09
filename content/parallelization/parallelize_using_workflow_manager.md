@@ -17,13 +17,36 @@ Given a Snakefile, Snakemake then detects in which order the steps need to be ru
 steps of the workflow can be run in parallel. Snakemake also checks if some of the expected 
 result files already exist on the disk and only runs jobs needed to produce the missing results. 
 
-A Snakefile producing the same output files as the submission script:
+In practice, what we need to run convert [the script approach](parallelize_using_script) is
+
+1. A snakefile which defines the computational steps (comparable to the Python/R script with loop)
+2. A profile file which defines the computational resources to request from cluster (comparable to the slurm batch script)
+
+A Snakefile producing the same output files as the Python/R submission scripts:
 
 ```{literalinclude} /code/snakemake/scikit_example/Snakefile
     :language: python
 ```
 
-The above Snakefile
+A profile file defining the same computational resources as the 
+```{literalinclude} /code/snakemake/scikit_example/profiles/slurm/config.yml
+```
+
+Run Snakemake with
+
+```
+snakemake --snakefile Snakefile --profile profiles/slurm --software-deployment-method apptainer conda
+```
+
+What happens:
+
+1. Snakemake infers from `workflow/Snakefile` that the required input files specified in rule "All" can be created using the rule "plot_decision_boundaries" in an embarassingly parallel manner. (Note that input files of the rule "All" are our target output files.)
+
+2. The profile configuration specified in `profiles/slurm/config.yaml` tells Snakemake to submit the jobs to Slurm and to request the specified resources (cpus, memory, runtime, etc.). The resources can be specified for each rule individually.
+
+3. The option `--software-deployment-method` tells Snakemake to create the environments in which to the rules are run using apptainer and conda.
+
+4. The option `--use-conda` tells Snakemake to look for Conda/Mamba environments in `.snakemake/conda/` for the rule "plot_decision_boundaries". These environments will be created if they do not exist yet.
 
 
 
