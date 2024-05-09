@@ -12,8 +12,8 @@ set-threads:
 # Set other resources (memory and time) for rule(s)
 set-resources:
   preprocess_data:
-    mem: 250MB
-    runtime: 00:15:00
+    mem: "250MB"
+    runtime: "00:15:00"
   train_and_plot:
-    mem: 500MB
-    runtime: 00:30:00
+    mem: "500MB"
+    runtime: "00:30:00"
