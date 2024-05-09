@@ -20,8 +20,10 @@ rule train_and_plot:
         "results/n_neighbors={n_neighbors}.png"
     conda:
         "envs/environment.yml"
+    log: 
+        "logs/{rule}/{wildcards}.log"
     shell:
-        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors}"
+        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} 1> {log} 2> {log}"
 
 
 # Rule to preprocess the data
@@ -32,6 +34,8 @@ rule preprocess_data:
         "data/preprocessed/Iris.pkl"
     conda:
         "envs/environment.yml"
+    log: 
+        "logs/{rule}/{wildcards}.log"
     shell:
-        "python preprocess_data.py --input-file {input} --output-file {output}"
+        "python preprocess_data.py --input-file {input} --output-file {output} 1> {log} 2> {log}"
  
