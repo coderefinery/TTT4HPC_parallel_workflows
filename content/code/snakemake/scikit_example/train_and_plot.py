@@ -33,7 +33,7 @@ with open("data/preprocessed/Iris.pkl", "rb") as f:
 
 # Parameters
 # Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics
-metrics = ["euclidean", "manhattan", "l1", "haversine", "cosine"]
+metrics = ["euclidean", "cosine"] # , "l1", "haversine", "manhattan"]
 
 # Loop over n_neighbors
 for metric in metrics:
