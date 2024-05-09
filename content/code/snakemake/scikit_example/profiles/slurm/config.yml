@@ -1,0 +1,19 @@
+# Tell snakemake to use Slurm
+executor: slurm
+
+# Maximum number of parallel jobs
+jobs: 10  
+
+# Set number of threads for rule(s) (in Snakemake 'threads' is equal to cpus-per-task)
+set-threads: 
+  preprocess_data: 1
+  train_and_plot: 2
+
+# Set other resources (memory and time) for rule(s)
+set-resources:
+  preprocess_data:
+    mem: "250MB"
+    runtime: "00:15:00"
+  train_and_plot:
+    mem: "500MB"
+    runtime: "00:30:00"
