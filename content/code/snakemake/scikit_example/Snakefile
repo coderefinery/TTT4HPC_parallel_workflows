@@ -36,5 +36,5 @@ rule preprocess_data:
     log: 
         "logs/preprocess_data/preprocess_data.log"
     shell:
-        "python preprocess_data.py --input-file {input} --output-file {output} 1> {log} 2> {log}"
+        "python preprocess_data.py 1> {log} 2> {log}"
  
