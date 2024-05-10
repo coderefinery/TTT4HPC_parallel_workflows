@@ -16,8 +16,8 @@ rule train_and_plot:
     input:
         "data/preprocessed/Iris.pkl"
     output:
-        expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRICS)
-        #"results/n_neighbors={n_neighbors}___metric=cosine.png",
+        #expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRICS)
+        "results/n_neighbors={n_neighbors}___metric=cosine.png",
         #"results/n_neighbors={n_neighbors}___metric=euclidean.png",
         #"results/n_neighbors={n_neighbors}___metric=haversine.png",
         #"results/n_neighbors={n_neighbors}___metric=l1.png",
