@@ -5,7 +5,7 @@
 #container: "docker://condaforge/mambaforge:latest"
 #container: "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
 
-N_NEIGHBORS_LIST = range(1, 3)
+N_NEIGHBORS_LIST = [1, 2, 4, 8, 16, 32, 64]
 
 # Final output files
 rule all:
@@ -18,7 +18,11 @@ rule train_and_plot:
     input:
         "data/preprocessed/Iris.pkl"
     output:
-        "results/n_neighbors={n_neighbors}.png"
+        "results/n_neighbors={n_neighbors}___metric=cosine.png",
+        "results/n_neighbors={n_neighbors}___metric=euclidean.png"
+        "results/n_neighbors={n_neighbors}___metric=haversine.png",
+        "results/n_neighbors={n_neighbors}___metric=l1.png",
+        "results/n_neighbors={n_neighbors}___metric=manhattan.png",
     container:
         "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
     log: 
