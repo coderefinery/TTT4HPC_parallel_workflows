@@ -23,11 +23,11 @@ want to compare the results, as the training/test split should be the same for a
 Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
 
 ````{toggle} train_and_plot.py
-    ```{literalinclude} /code/snakemake/scikit_example/preprocess.py
-       :language: python
-       :linenos:
-       :emphasize-lines: 1-7, 53
-    ```
+   ```{literalinclude} /code/snakemake/scikit_example/preprocess.py
+      :language: python
+      :linenos:
+      :emphasize-lines: 1-7, 53
+   ```
 ````
 
 We only include those imports necessary and make sure, that the data/preprocessed folder exists when we run the code.
@@ -35,11 +35,11 @@ This allows us to run the pre-processing once and in further steps always use th
 data avoiding unnecessary compute time if we e.g. want to change the metrics.
 
 ````{toggle} train_and_plot.py
-    ```{literalinclude} /code/python/scikit_example/train_and_plot.py
-       :language: python
-       :linenos:
-       :emphasize-lines: 1-9
-    ```
+   ```{literalinclude} /code/python/scikit_example/train_and_plot.py
+      :language: python
+      :linenos:
+      :emphasize-lines: 1-9
+   ```
 ````
 
 For the training and plotting we again clean up the imports, and otherwise leave the code unchanged.
