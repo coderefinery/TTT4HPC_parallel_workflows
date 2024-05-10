@@ -15,9 +15,9 @@ is that each computational step in a workflow is presented as a _rule_ which tak
 as a file and writes its output to a file. These rules are written in a _Snakefile_ using a Python-like scripting language.
 Given a Snakefile, Snakemake then detects in which order the steps need to be run and which 
 steps of the workflow can be run in parallel. Snakemake also checks if some of the expected 
-result files already exist on the disk and only runs jobs needed to produce the missing results. 
+result files already exist on the disk and only runs jobs needed to produce the missing results.
 
-In practice, what we need to run convert [the script approach](parallelize_using_script) is
+In practice, what we need to run convert [the script approach](parallelize_using_script) to a Snakemake workflow is
 
 1. A snakefile which defines the computational steps (comparable to the Python/R script with loop)
 2. A profile file which defines the computational resources to request from cluster (comparable to the slurm batch script)
@@ -28,7 +28,8 @@ A Snakefile producing the same output files as the Python/R submission scripts:
     :language: python
 ```
 
-A profile file defining the same computational resources as the 
+A profile file defining the same computational resources as the
+
 ```{literalinclude} /code/snakemake/scikit_example/profiles/slurm/config.yml
 ```
 
@@ -47,7 +48,16 @@ What happens:
 
 3. The option `--software-deployment-method` tells Snakemake to create the environments in which the rules are run using apptainer and conda.
 
-4. The option `--use-conda` tells Snakemake to look for Conda/Mamba environments in `.snakemake/conda/` for the rule "plot_decision_boundaries". These environments will be created if they do not exist yet.
+(4. The option `--use-conda` tells Snakemake to look for Conda/Mamba environments in `.snakemake/conda/` for the rule "plot_decision_boundaries". These environments will be created if they do not exist yet.)
 
 
+## Summary
+
+In summary, advantages and disadvantages of using a workflow manager to parallelize jobs:
+
++ Defining complete workflow using a workflow manager makes sure that scripts are submitted in correct order and in parallel if possible.
++ A workflow manager checks if some or all of the expected result files already exist and only runs jobs needed to produce the missing results.
+  
+- A workflow manager is yet another, relatively complex, tool to learn and will take time.
+- Not all clusters support using the workflow manager(s) of your choice out of the box. In this case, contact the cluster admin and ask what is the recommended way to use them.
 
