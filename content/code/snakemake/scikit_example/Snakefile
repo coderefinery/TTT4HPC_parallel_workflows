@@ -24,7 +24,7 @@ rule train_and_plot:
     log: 
         "logs/train_and_plot/n_neighbors={n_neighbors}.log"
     shell:
-        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors}" #  1> {log} 2> {log}"
+        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} 1> {log} 2> {log}"
 
 
 # Rule to preprocess the data
@@ -36,5 +36,5 @@ rule preprocess:
     log: 
         "logs/preprocess_data/preprocess.log"
     shell:
-        "python preprocess.py" # 1> {log} 2> {log}"
+        "python preprocess.py 1> {log} 2> {log}"
  
