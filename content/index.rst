@@ -47,8 +47,8 @@ on mechanisms within the language.
    :widths: auto
    :delim: ;
 
+   5 min ; :doc:`motivation`
    60 min ; :doc:`parallelization/index`   
-   30 min ; :doc:`workflowtools/index`
    30 min ; :doc:`pitfalls/index`
    5 min ; :doc:`conclusions`
 
@@ -56,9 +56,9 @@ on mechanisms within the language.
 .. toctree::
    :maxdepth: 1
    :caption: The lesson
-
+   
+   motivation
    parallelization/index
-   workflowtools/index
    pitfalls/index
    conclusions
 
