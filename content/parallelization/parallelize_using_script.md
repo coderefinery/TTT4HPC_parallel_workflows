@@ -3,7 +3,7 @@
 Even in an embarassingly parallel situation we will have to make a couple of adaptions to the code
 in order to be able to run parallel executions of our code. For this walkthrough we will be starting with
 a jupyter notebook that is based on the
-[Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The notbook can be found [here](/code/jupyter/knn_iris.ipynb)
+[Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The notebook can be found [here](/code/jupyter/knn_iris.ipynb)
 
 ## Convert the notebook to a python script
 
