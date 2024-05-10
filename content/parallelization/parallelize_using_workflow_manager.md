@@ -36,7 +36,7 @@ A profile file defining the same computational resources as the
 Run Snakemake with
 
 ```
-snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-method apptainer conda
+snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-method apptainer
 
 ```
 

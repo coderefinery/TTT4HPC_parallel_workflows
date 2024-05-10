@@ -29,8 +29,6 @@ rule train_and_plot:
 
 # Rule to preprocess the data
 rule preprocess_data:
-    input:
-        "data/Iris.csv"
     output:
         "data/preprocessed/Iris.pkl"
     container:
