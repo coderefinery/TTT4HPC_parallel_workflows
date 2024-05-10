@@ -1,0 +1,34 @@
+N_NEIGHBORS_LIST = [1] # [1, 2, 4, 8, 16, 32, 64]
+METRICS = ["cosine", "euclidean", "haversine", "l1", "manhattan"]
+
+# Final output files
+rule all:
+    input:
+        expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRICS)
+
+
+# Rule to produce the final output files for parameter combinations
+rule train_and_plot:
+    input:
+        "data/preprocessed/Iris.pkl"
+    output:
+        "results/n_neighbors={n_neighbors}___metric={metric}.png",
+    container:
+        "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
+    log: 
+        "logs/train_and_plot/n_neighbors={n_neighbors}___metric={metric}.log"
+    shell:
+        "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric} 1> {log} 2> {log}"
+
+
+# Rule to preprocess the data
+rule preprocess:
+    output:
+        "data/preprocessed/Iris.pkl"
+    container:
+        "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
+    log: 
+        "logs/preprocess_data/preprocess.log"
+    shell:
+        "python preprocess.py 1> {log} 2> {log}"
+ 

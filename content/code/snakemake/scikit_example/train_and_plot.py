@@ -22,6 +22,7 @@ parser.add_argument(
     type=int,
     help="The number of neighbors to use for calculation.",
 )
+
 args = parser.parse_args()
 n_neighbors = args.n_neighbors
 
@@ -35,7 +36,7 @@ with open("data/preprocessed/Iris.pkl", "rb") as f:
 # Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics
 metrics = ["euclidean", "manhattan", "l1", "haversine", "cosine"]
 
-# Loop over n_neighbors
+# Loop over metrics
 for metric in metrics:
     # Fit
     clf = Pipeline(
