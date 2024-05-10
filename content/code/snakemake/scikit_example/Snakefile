@@ -10,9 +10,11 @@ N_NEIGHBORS_LIST = [1, 2, 4, 8, 16, 32, 64]
 # Final output files
 rule all:
     input:
+        expand("results/n_neighbors={n_neighbors}___metric=cosine.png", n_neighbors=N_NEIGHBORS_LIST)
+
+        
         #expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=["cosine", "euclidean", "haversine", "l1", "manhattan"])
-        expand("results/n_neighbors={n_neighbors}___metric=cosine.png", n_neighbors=N_NEIGHBORS_LIST),
-        expand("results/n_neighbors={n_neighbors}___metric=euclidean.png", n_neighbors=N_NEIGHBORS_LIST),
+        #expand("results/n_neighbors={n_neighbors}___metric=cosine.png", n_neighbors=N_NEIGHBORS_LIST),
 
 
 # Rule to produce the output files for parameter combinations.
