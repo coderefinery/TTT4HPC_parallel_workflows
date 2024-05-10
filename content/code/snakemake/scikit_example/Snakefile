@@ -29,7 +29,7 @@ rule train_and_plot:
     container:
         "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
     log: 
-        "logs/train_and_plot/n_neighbors={n_neighbors}.log"
+        "logs/train_and_plot/n_neighbors={n_neighbors}___metric={metric}.log"
     shell:
         "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} 1> {log} 2> {log}"
 
