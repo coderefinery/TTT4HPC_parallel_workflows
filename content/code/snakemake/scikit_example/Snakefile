@@ -28,13 +28,13 @@ rule train_and_plot:
 
 
 # Rule to preprocess the data
-rule preprocess_data:
+rule preprocess:
     output:
         "data/preprocessed/Iris.pkl"
     container:
         "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
     log: 
-        "logs/preprocess_data/preprocess_data.log"
+        "logs/preprocess_data/preprocess.log"
     shell:
-        "python preprocess_data.py 1> {log} 2> {log}"
+        "python preprocess.py 1> {log} 2> {log}"
  
