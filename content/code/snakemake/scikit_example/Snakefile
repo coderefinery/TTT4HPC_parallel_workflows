@@ -2,7 +2,8 @@
 # conda environments from within the container. The conda environments will be stored 
 # in the working environment. 
 #container: "docker://continuumio/miniconda3:4.4.10"
-container: "docker://condaforge/mambaforge:latest"
+#container: "docker://condaforge/mambaforge:latest"
+#container: "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
 
 N_NEIGHBORS_LIST = range(1, 3)
 
@@ -18,8 +19,8 @@ rule train_and_plot:
         "data/preprocessed/Iris.pkl"
     output:
         "results/n_neighbors={n_neighbors}.png"
-    conda:
-        "envs/environment.yml"
+    container:
+        "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
     log: 
         "logs/train_and_plot/n_neighbors={n_neighbors}.log"
     shell:
@@ -32,8 +33,8 @@ rule preprocess_data:
         "data/Iris.csv"
     output:
         "data/preprocessed/Iris.pkl"
-    conda:
-        "envs/environment.yml"
+    container:
+        "docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest"
     log: 
         "logs/preprocess_data/preprocess_data.log"
     shell:
