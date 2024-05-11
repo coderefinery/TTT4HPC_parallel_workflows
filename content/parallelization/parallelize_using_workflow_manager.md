@@ -54,24 +54,26 @@ snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-
 
 ```
 
-Breakdown of the command:
+What the command does:
 
-1. Snakemake infers from `workflow/Snakefile` that the required input files specified in rule "All" can be created using the rule "plot_decision_boundaries" in an embarassingly parallel manner. (Note that input files of the rule "All" are our target output files.)
+1. Snakemake infers from `workflow/Snakefile` that the required input files specified in rule "All" can be created using the rule "train_and_plot" in an embarassingly parallel manner. (Note that input files of the rule "All" are our target output files.)
 
-2. Snakemake looks for profile configuration file `config.yml` in the given path `profiles/slurm/`. The profile tells Snakemake to submit the jobs to Slurm and to request specific resources (cpus, memory, runtime, etc.). The resources can be specified for each rule individually.
+2. Snakemake looks for profile configuration file `config.yml` in the given path `profiles/slurm/`. The profile tells Snakemake to submit the jobs to Slurm and to request specific resources (cpus, memory, runtime, etc.). The resources are specified for each rule individually.
 
 3. The option `--software-deployment-method` tells Snakemake to create the environments in which the rules are run using apptainer and conda.
 
 
 
 
+
+
 ## Summary
 
-In summary, advantages and disadvantages of using a workflow manager to parallelize jobs:
+Advantages and disadvantages of using a workflow manager to parallelize jobs:
 
 + Defining complete workflow using a workflow manager makes sure that scripts are submitted in correct order and in parallel if possible.
-+ A workflow manager checks if some or all of the expected result files already exist and only runs jobs needed to produce the missing results.
++ The workflow manager checks if some or all of the expected result files already exist and only runs jobs needed to produce the missing results.
   
-- A workflow manager is yet another, relatively complex, tool to learn and will take time.
+- Workflow managers are yet another, relatively complex, tool to learn and will take time.
 - Not all clusters support using the workflow manager(s) of your choice out of the box. In this case, contact the cluster admin and ask what is the recommended way to use them.
 

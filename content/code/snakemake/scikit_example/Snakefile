@@ -1,11 +1,11 @@
-N_NEIGHBORS_LIST = [1] # [1, 2, 4, 8, 16, 32, 64]
+N_NEIGHBORS_LIST = [1, 2, 4, 8, 16, 32, 64]
 METRICS = ["cosine", "euclidean", "haversine", "l1", "manhattan"]
 
 # Final output files
 rule all:
     input:
         expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRICS)
-
+        
 
 # Rule to produce the final output files for parameter combinations
 rule train_and_plot:
