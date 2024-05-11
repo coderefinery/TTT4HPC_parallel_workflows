@@ -1,41 +1,53 @@
 # Parallelize using Workflow Manager
 
-We have now seen how to parallelize code using a script which loops over parameters and 
-submits a job for each one correspondingly. This approach allows reusable code and generalizes 
-well to different types and numbers of parameters (integers, floats, text, etc.)
-and their combinations. However, if the parallelized jobs are a part of a bigger workflow 
+In a previous [section](parallelize_using_script), we parallelized code using a Python/R script which loops over a parameter
+(or multiple parameters) and submits a job for each value (or combination) correspondingly. This approach 
+allows reusable code and generalizes well to different types and numbers of parameters (integers, floats, text, etc.)
+and their combinations.
+
+However, if the parallelized jobs are a part of a bigger workflow 
 with several steps, such as preprocessing and postprocessing scripts, one needs to make sure 
-that all the steps are run in the correct order and are correctly scheduled. For example, 
+that all the steps are run in the correct order and are correctly scheduled. For example,
 training data needs to be preprocessed before starting the training script and only 
-those jobs that can be run in parallel should be submitted at the same time. 
+those jobs that can be run in parallel should be submitted at the same time
 
 As an alternative to the submission script, we next look at running the preprocessing and the 
-training/plotting scripts using Snakemake, a workflow manager tool. The main idea of Snakemake 
+training/plotting scripts using a _workflow manager_ tool. The general idea of a workflow manager
 is that each computational step in a workflow is presented as a _rule_ which takes its input 
-as a file and writes its output to a file. These rules are written in a _Snakefile_ using a Python-like scripting language.
-Given a Snakefile, Snakemake then detects in which order the steps need to be run and which 
-steps of the workflow can be run in parallel. Snakemake also checks if some of the expected 
-result files already exist on the disk and only runs jobs needed to produce the missing results.
+as a file and writes its output to a file. The workflow manager then detects in which order 
+the steps need to be run and which steps of the workflow can be run in parallel. The manager
+also checks if some of the expected result files already exist on the disk and only runs jobs 
+needed to produce the missing results.
 
-TODO: Discussion on where to get the workflow manager on cluster?
+While there are multiple workflow managers out there
+(see an [example list](https://github.com/meirwah/awesome-workflow-engines)), here we will
+use a particular tool named [Snakemake](https://snakemake.readthedocs.io/en/stable/).
+In Snakemake, the workflow rules are written in a _Snakefile_ using a Python-like scripting language.
+Snakemake itself is written in Python and can be installed using [pip](https://pypi.org/project/snakemake/) 
+along with its [Slurm plugin](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html).
 
-What we need to run convert [the script approach](parallelize_using_script) to a Snakemake workflow is
+In order to convert [the Python/R script approach](parallelize_using_script) to a Snakemake workflow, we do the following.
 
-1. A snakefile which defines the computational steps (comparable to the Python/R script with loop)
-2. A profile file which defines the computational resources to request from cluster (comparable to the slurm batch script)
+1. We write a _Snakefile_ which defines the computational steps (compare to the Python/R script with the loop)
+2. We write a _profile file_ which defines the computational resources to request from cluster (compare to the Slurm batch script)
 
-A Snakefile producing the same output files as the Python/R submission scripts:
+A Snakefile which produces the same target output files (the images) as the Python/R submission scripts:
 
 ```{literalinclude} /code/snakemake/scikit_example/Snakefile
     :language: python
 ```
 
-A profile file defining the same computational resources as the
+A Snakemake profile file which defines the same computational resources as the sbatch script:
 
-```{literalinclude} /code/snakemake/scikit_example/profiles/slurm/config.yml
+```{literalinclude} /code/snakemake/scikit_example/profiles/slurm/config.yaml
 ```
 
-Run Snakemake with
+>*_NOTE:_* There may be cluster-specific restrictions on how to access Snakemake. If your
+> cluster does not support Snakemake e.g. via the module system or user-specific
+> environments (conda, venv, etc.), contact your cluster admin and ask what is
+> their recommended way of using Snakemake.
+
+We can run Snakemake with
 
 ```
 snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-method apptainer
@@ -49,6 +61,8 @@ Breakdown of the command:
 2. Snakemake looks for profile configuration file `config.yml` in the given path `profiles/slurm/`. The profile tells Snakemake to submit the jobs to Slurm and to request specific resources (cpus, memory, runtime, etc.). The resources can be specified for each rule individually.
 
 3. The option `--software-deployment-method` tells Snakemake to create the environments in which the rules are run using apptainer and conda.
+
+
 
 
 ## Summary
