@@ -13,22 +13,16 @@ Tuesdays tools and techniques for HPC - Parallelization
    <https://scicomp.aalto.fi/training/scip/workflows-2023/>`__.
    Dates are not yet known and registration is not yet open, though.
 
-Improve your cluster workflows!  You've had a basic course on working
-with a cluster - but what do people *actually* do? This course shows
-practical examples and tips which may help you, but aren't usually
-covered in either basic or advanced courses.
-
-We won't go so deep into each topic that you know everything about it,
-but you learn what is possible, see some examples, and know where to
-follow up on the tools that are right for *you*.  The format is
-designed to be "fireside chat with experts", a combination of demos,
-type-along, and independent exercises.  You can engage at different
-levels, depending on your interest.
-
 In this lesson we will introduce the concept of embarassingly parallel 
 code, and how we can use this property to easily distribute heavy 
 computation to multiple processes without the necessity of falling back
 on mechanisms within the language. 
+
+By running several computations in parallel we place a few more constraints on what we can
+or cannot do, resulting in concurrency issues. In a non parallel situation we commonly
+do not need to pay attention to what the resources are accessed by the code. This is different
+when the code runs in parallel. There are also additional considerations as to overheads
+which need to be taken into consideration.
 
 .. prereq::
 
@@ -42,25 +36,67 @@ on mechanisms within the language.
      (Slurm-based, but most are these days).  (If you don't have, you
      can't do all exercises - but still might learn something!)
 
+Parallelization
+---------------
+This part of the lesson will introduce the concept of embarassingly parallel 
+code, and how we can use this property to easily distribute heavy 
+computation to multiple processes without the necessity of falling back
+on mechanisms within the language. 
 
 .. csv-table::
    :widths: auto
    :delim: ;
 
    5 min ; :doc:`motivation`
-   60 min ; :doc:`parallelization/index`   
-   30 min ; :doc:`pitfalls/index`
-   5 min ; :doc:`conclusions`
+   10 min ; :doc:`parallelization/concepts`
+   30 min ; :doc:`parallelization/parallelize_using_script`   
+   10 min ; :doc:`parallelization/array_jobs`
+   20 min ; :doc:`parallelization/parallelize_using_workflow_manager`
 
+Pitfalls
+--------
+By running several computations in parallel we place a few more constraints on what we can
+or cannot do, resulting in concurrency issues. In a non parallel situation we commonly
+do not need to pay attention to what the resources are accessed by the code. This is different
+when the code runs in parallel. There are also additional considerations as to overheads
+which need to be taken into consideration.
+
+.. csv-table::
+   :widths: auto
+   :delim: ;
+
+   5 min ; :doc:`pitfalls/concurrency_issues`
+   5 min ; :doc:`pitfalls/os_side`
+   5 min ; :doc:`conclusions`
 
 .. toctree::
    :maxdepth: 1
-   :caption: The lesson
+   :caption: Introduction
    
    motivation
-   parallelization/index
-   pitfalls/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Parallelization
+
+   parallelization/concepts
+   parallelization/parallelize_using_script
+   parallelization/array_jobs
+   parallelization/parallelize_using_workflow_manager
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Pitfalls
+
+   pitfalls/concurrency_issues
+   pitfalls/os_side
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Conclusions
+
    conclusions
+
 
 .. toctree::
    :maxdepth: 1
