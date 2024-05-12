@@ -1,6 +1,6 @@
 # Parallelize using Workflow Manager
 
-In a previous [section](parallelize_using_script), we parallelized code using a Python/R script which loops over a parameter
+In a previous section ({ref}`parallelize_using_script`), we parallelized code using a Python/R script which loops over a parameter
 (or multiple parameters) and submits a job for each value (or combination) correspondingly. This approach 
 allows reusable code and generalizes well to different types and numbers of parameters (integers, floats, text, etc.)
 and their combinations. However, if the parallelized jobs are a part of a bigger workflow 
@@ -45,7 +45,9 @@ provide users with a recommended way to access to Snakemake. As an example:
 
 ## Create and Run Snakemake Workflow
 
-In order to convert [two submission script approach](parallelize_using_script) to a Snakemake workflow, we do the following.
+In order to convert the submission script approach
+({ref}`parallelize_using_script`)
+to a Snakemake workflow, we do the following:
 
 1. We write a _Snakefile_ which defines the preprocessing and training/plotting steps as rules.
 2. We write a _profile file_ which defines the same requested computational resources as the Slurm batch script.
