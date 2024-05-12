@@ -18,11 +18,6 @@ code, and how we can use this property to easily distribute heavy
 computation to multiple processes without the necessity of falling back
 on mechanisms within the language. 
 
-By running several computations in parallel we place a few more constraints on what we can
-or cannot do, resulting in concurrency issues. In a non parallel situation we commonly
-do not need to pay attention to what the resources are accessed by the code. This is different
-when the code runs in parallel. There are also additional considerations as to overheads
-which need to be taken into consideration.
 
 .. prereq::
 
@@ -49,6 +44,7 @@ on mechanisms within the language.
 
    5 min ; :doc:`motivation`
    10 min ; :doc:`parallelization/concepts`
+   5 min ; :doc:`parallelization/jupyter_to_script`
    30 min ; :doc:`parallelization/parallelize_using_script`   
    10 min ; :doc:`parallelization/array_jobs`
    20 min ; :doc:`parallelization/parallelize_using_workflow_manager`
@@ -80,6 +76,7 @@ which need to be taken into consideration.
    :caption: Parallelization
 
    parallelization/concepts
+   parallelization/jupyter_to_script
    parallelization/parallelize_using_script
    parallelization/array_jobs
    parallelization/parallelize_using_workflow_manager

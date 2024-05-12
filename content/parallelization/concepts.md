@@ -18,8 +18,8 @@ for i in range(len(data)) do:
 or
 
 ```python
-parameters1 = [ 1,2,3,4,5,6 ]
-parameters2 = [ "a","b","c","d" ]
+parameters1 = [ 1, 2, 3, 4, 5, 6 ]
+parameters2 = [ "a", "b", "c", "d" ]
 res = []
 
 for p1 in parameters1:

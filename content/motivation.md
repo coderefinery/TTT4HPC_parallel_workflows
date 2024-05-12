@@ -11,7 +11,7 @@
 
 ## Why parallelize at all
 
-While the actual processing speeds of processors hasn't increased that much over the last decade (~3.6 Ghz i~ 2010 vs 4.1 Ghz in 2020)
+While the actual processing speeds of processors hasn't increased that much over the last decade (~3.6 Ghz in 2010 vs 4.1 Ghz in 2020)
 the number of cores has increased significantly (from max 6 (most machines having 2) to up to 64 (with most having ~6)). This is particularly
 true if we look at clusters, where the number of machines and thus available cores has risen a lot, while the single core speed hasn't
 improved that much.
