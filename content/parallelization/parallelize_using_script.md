@@ -141,7 +141,7 @@ Finally, we need to submit our job. This can be done using whatever language you
 `````{tabs}
 
    ````{group-tab} Python
-    ```{literalinclude} /code/snakemake/scikit_example/submission.py
+    ```{literalinclude} /code/python/scikit_example/submission.py
         :language: python
     ```
     You can run this code by running `python3 submission.py` and it will submit the
