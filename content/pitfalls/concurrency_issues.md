@@ -1,7 +1,7 @@
 # Concurrency issues
 
-Probably the most common issues when running embarassingly, or in general parallel computations, arises due to concurrency issuees, where multiple threads try to modify the same source or the same element.
-Here, we will give some examples of issue sthat can arise
+Probably the most common issues when running embarrassingly, or in general parallel computations, arises due to concurrency issues, where multiple threads try to modify the same source or the same element.
+Here, we will give some examples of issues that can arise
 
 ## Concurrent File Access
 
@@ -25,7 +25,7 @@ Let's take the following piece of code:
 
 `````
 
-which we have identified as embarassingly parallel code and converted to the following:
+which we have identified as embarrassingly parallel code and converted to the following:
 
 `````{tabs}
 
@@ -54,7 +54,7 @@ simultaneously write to the same file, or that some try to read from the file wh
 written to. More inconvenient could be suspiciously missing results in the results file, due to
 two reads of the file, which leads to conflicting writes, where one result is simply lost.
 Or, we could end up with an entirely corrupt file, when two jobs write simultaneously and the
-filesystem doesn't complain about it...
+file system doesn't complain about it...
 
 So, an important thing to keep in mind is to have the parallelized code really be independent
 of other instances. In most cases this means, using index specific output files and having a
@@ -69,7 +69,7 @@ of other instances. In most cases this means, using index specific output files 
 python collection.py
 ```
 
-If you use a submission script you would ned to list all jobs in the dependency part, at which point it likely is easier to just wait for completion and then manually do the collection.
+If you use a submission script you would need to list all jobs in the dependency part, at which point it likely is easier to just wait for completion and then manually do the collection.
 The above case would then become something like:
 
 Calculation script:
@@ -112,7 +112,7 @@ Submission:
 
 `````
 
-CollectionScript:
+Collection script:
 
 `````{tabs}
 
@@ -156,7 +156,7 @@ While the above example might be a bit artificial, we once had a user, who had a
 workflow, which needed to call scripts from several languages, and used files to communicate
 between the different runs. However, these temporary files were the same for all runs, which
 lead to results that were completely unreliable. The user was lucky that some of the runs
-actually errored out with a very strange error and they had to re-run all of their runs as
+actually failed with a very strange error and they had to re-run all of their runs as
 none were reliable. And these things can even be hidden within some libraries, which expect to
 only be used in one process at a time and e.g. write some temporary files to home folders.
 

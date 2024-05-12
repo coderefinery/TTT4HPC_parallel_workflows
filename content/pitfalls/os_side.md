@@ -3,14 +3,14 @@
 While parallelizing code can often speed up processing of large quantities of problems, there are often limitations
 which are easily missed on the side of the scheduler, or the hardware used.
 
-## File access limitatons
+## File access limitations
 
 While your own computer will most likely have a fast SSD drive, many file servers still operate using spinning disks,
 which are inherently slower. To still provide fast access to data, this is commonly addressed by file systems where
 files get spread over multiple disks, and the file system starting to read from multiple disks at once leading to an
 overall read speed similar to that of a SSD. However this "striping" is commonly only applied to larger files since the
-benefit for really small files is irelevant. At the same time the file systems or even the disks themselves
-commonly provide some caches, which allow for fast access to smaller files if they are read repetetively
+benefit for really small files is irrelevant. At the same time the file systems or even the disks themselves
+commonly provide some caches, which allow for fast access to smaller files if they are read repetitively
 Now imagine you have some code that loads many small files and you run this code in parallel (as is typical for a
 workflow training an model). All those processes will try to read thousands of small files at random. In this
 situation, the caches of the file system will not be large enough to contain all your requested files, while
@@ -38,10 +38,10 @@ python, importing some larger packages, loading data, etc) which takes 60 second
 times, with each iteration taking a 2 minutes. So in total you have a runtime of about 333 hours. If you now split this
 into ten thousand individual jobs, you:
 
-- try to read the same files in your environment ten thousand times (leading to the i/o speed issues discribed above), which can increase the startup time
+- try to read the same files in your environment ten thousand times (leading to the i/o speed issues described above), which can increase the startup time
 - and you add 10000 minutes of startup time to the execution of your code.
   Overall out of 20002 minutes of CPU time you now likely have some 35000 minutes (if not more). Depending on whether you
-  pay for your usage, this might cause siginificant cost increases. In addition, the sheer amount of the jobs put a lot of
+  pay for your usage, this might cause significant cost increases. In addition, the sheer amount of the jobs put a lot of
   burden on the scheduler, and you might even run into job limits on your cluster.
   To avoid this kind of scenario and more efficiently use the resources, it is often better to group multiple iterations
   into one job. From our experience a good minimum target run time is about one hour. In the case described above, this

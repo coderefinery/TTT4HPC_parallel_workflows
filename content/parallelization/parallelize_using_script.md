@@ -1,14 +1,14 @@
 (parallelize_using_script)=
 # Parallelize using Script
 
-Even in an embarassingly parallel situation we will have to make a couple of adaptions to the code
-in order to be able to run parallel executions of our code. For this walkthrough we will be starting with
+Even in an embarrassingly parallel situation we will have to make a couple of adaptions to the code
+in order to be able to run parallel executions of our code. For this walk-through we will be starting with
 a jupyter notebook that is based on the
 [Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The notebook can be found [here](/code/jupyter/knn_iris.ipynb)
 
 ## Convert the notebook to a python script
 
-The first step is to convert the notebook into a python script. This is rther simple and can be done in jupyter by going to:
+The first step is to convert the notebook into a python script. This is rather simple and can be done in jupyter by going to:
 
 ```
 "File" -> "Save and Export Notebook as..." -> "Executable Script"
@@ -102,7 +102,7 @@ There are two ways how this can be done.
 
 Slurm array jobs have the advantage of being an integral part of slurm, so you can use features like mail
 notification once the whole job is done. The difference between a "normal" job and an array job is that
-an arrayjob runs the same code multiple times with the only difference between the jobs being the `$SLURM_ARRAY_JOB_ID`
+an array-job runs the same code multiple times with the only difference between the jobs being the `$SLURM_ARRAY_JOB_ID`
 variable. The values for the variable are defined in the submission script using the `--array` parameter, which can take
 either ranges (`--array=[0-3]`, four jobs with array id 0,1,2 and 3) or individual numbers (`--array=1,3,6` three jobs with id 1,3 and 6). However you can only use integer values for this, so if you need any other input, you will either need to
 convert the numbers in your code, or keep hard coded variable lists in your code, which makes it less flexible.
@@ -111,7 +111,7 @@ Using a custom submission script has the disadvantage, that you need to code it.
 jobs, you also cannot make use of notifications for the whole set of jobs. However, it has the advantage that you
 are more flexible in what kind of variables you want to post to your job.
 
-For this walkthrough, we will use a custom submission script, but we also give an example of how to do it with a
+For this walk-through, we will use a custom submission script, but we also give an example of how to do it with a
 slurm array job [here](array_jobs)
 
 ### Update the slurm scripts

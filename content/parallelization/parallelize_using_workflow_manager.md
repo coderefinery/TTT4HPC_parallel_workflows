@@ -50,7 +50,7 @@ In order to convert [two submission script approach](parallelize_using_script) t
 1. We write a _Snakefile_ which defines the preprocessing and training/plotting steps as rules.
 2. We write a _profile file_ which defines the same requested computational resources as the Slurm batch script.
 
-A Snakefile which defines the prepcessing and training/plotting steps and produces the same target images:
+A Snakefile which defines the preprocessing and training/plotting steps and produces the same target images:
 
 ```{literalinclude} /code/snakemake/scikit_example/Snakefile
     :language: python
@@ -70,15 +70,11 @@ snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-
 
 What the command does:
 
-1. Snakemake infers from `workflow/Snakefile` that the required input files specified in rule "All" can be created using the rule "train_and_plot" in an embarassingly parallel manner. (Note that input files of the rule "All" are our target image files.)
+1. Snakemake infers from `workflow/Snakefile` that the required input files specified in rule "All" can be created using the rule "train_and_plot" in an embarrassingly parallel manner. (Note that input files of the rule "All" are our target image files.)
 
 2. Snakemake looks for a profile configuration file `config.yml` in the given path `profiles/slurm/`. The profile tells Snakemake to submit the jobs to Slurm and to request specific resources (cpus, memory, runtime, etc.). The resources are specified for each rule individually.
 
 3. The option `--software-deployment-method` tells Snakemake to create the environments in which the rules are run using apptainer and conda.
-
-
-
-
 
 
 ## Advantages and Disadvantages
@@ -91,5 +87,3 @@ A summary of the advantages and disadvantages of using a workflow manager to par
 
 - Not all clusters support using the workflow manager(s) of your choice out of the box. In this case, contact the cluster admin and ask what is the recommended way to use them.  
 - Workflow managers are (relatively) complex tools with their own scripting syntaxes, practices, and ecosystems. Learning to use one will take time.
-
-

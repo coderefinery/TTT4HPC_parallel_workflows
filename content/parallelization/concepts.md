@@ -1,11 +1,11 @@
 # Concepts
 
-## Embarassingly parallel code
+## Embarrassingly parallel code
 
-Embarassingly parallel code is code that essentially runs the same functionality
+Embarrassingly parallel code is code that essentially runs the same functionality
 for a large variety of input parameters, where each step does not depend on anything
 other than the input data.
-Here are two types of situations in pseudo-code that show embarassinlgy parallel execution:
+Here are two types of situations in pseudo-code that show embarrassinlgy parallel execution:
 
 ```python
 data = load_and_preprocess_data
@@ -27,7 +27,7 @@ for p1 in parameters1:
      res.append(calculate(p1, p2))
 ```
 
-The first being a pipeline applied to every datapoint in some input data, the second a cassical
+The first being a pipeline applied to every datapoint in some input data, the second a classical
 (hyper-)parameter sweep for a model. Essentially you are running the same type of computation
 for each entry of a set of data. This is the type of code that can easily be parallelized on a
 scheduler level.

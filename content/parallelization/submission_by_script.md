@@ -13,7 +13,7 @@ of our project and will make it more likely that errors are introduced in the co
 So an alternative approach to touching our code base is to create packages that can parse
 multiple or non integer input parameters.
 
-Here is a simple piece of code that combines a Name with a numbe rand writes it to a
+Here is a simple piece of code that combines a Name with a number and writes it to a
 file with a given name, where all elements are given as command line arguments.
 
 `````{tabs}
@@ -70,7 +70,7 @@ submissions:
 This way, we have separated the input parameters from the code itself.
 The main things you have to take care of when doing this are:
 
-- Make sure, that no two output files have the same name. This is particularily important, if you determine the output file name not by an explicit provided file name but e.g. from the input parameters.
+- Make sure, that no two output files have the same name. This is particularly important, if you determine the output file name not by an explicit provided file name but e.g. from the input parameters.
 - Be careful when using floating numbers as input parameters, as the values actually supplied can be different (due to rounding and string representation) than the numbers you intend to be providing. This should be very small differences, but depending on your problem this can have a huge impact.
 
 You can of course also make more complex submission scripts using nested loops (e.g. if values depend on each other).
