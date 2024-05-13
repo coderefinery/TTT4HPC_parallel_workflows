@@ -1,22 +1,10 @@
 Tuesdays tools and techniques for HPC - Parallelization
 =======================================================
 
-.. warning::
-
-   This is under construction.  The schedule is not final, please see
-   the planning HackMD (not linked here, check on CodeRefinery chat)
-   for the current planning. 
-
-.. admonition:: Course instance in April 2024
-
-   You can follow the dates this course is given on the `course page
-   <https://scicomp.aalto.fi/training/scip/workflows-2023/>`__.
-   Dates are not yet known and registration is not yet open, though.
-
-In this lesson we will introduce the concept of embarassingly parallel 
-code, and how we can use this property to easily distribute heavy 
+In this lesson we will introduce the concept of embarassingly parallel
+code, and how we can use this property to easily distribute heavy
 computation to multiple processes without the necessity of falling back
-on mechanisms within the language. 
+on mechanisms within the language.
 
 
 .. prereq::
@@ -33,10 +21,10 @@ on mechanisms within the language.
 
 Parallelization
 ---------------
-This part of the lesson will introduce the concept of embarassingly parallel 
-code, and how we can use this property to easily distribute heavy 
+This part of the lesson will introduce the concept of embarassingly parallel
+code, and how we can use this property to easily distribute heavy
 computation to multiple processes without the necessity of falling back
-on mechanisms within the language. 
+on mechanisms within the language.
 
 .. csv-table::
    :widths: auto
