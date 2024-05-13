@@ -27,6 +27,9 @@ and can be used to select what to calculate in this job.
 We can use this variable to tell our program which element to use in this job, done in the above example
 by passing the `$SLURM_ARRAY_TASK_ID` as the parameter argument for the program we run.
 
+Compared to submitting data via a custom submission script, this approach is more convenient, if your
+input parameters are positive integer numbers, as it combines all jobs into a single submission.
+
 ## Exercise 1
 
 ```{exercise} Parallel-2: Create a slurm script and run it.
@@ -66,6 +69,3 @@ provided by `$SLURM_ARRAY_TASK_ID` or use multiple input parameters. To do this,
 either adapt your code or generate more complex logic within the batch submission script
 using bash commands. We will not go into the details of bash programming here, but if you
 are familiar this can be a convenient way to achieve more complex input parameters.
-
-In the next section we will show you an alternative way to do this, which might be more
-convenient as it uses the language you commonly use to achieve the same goal.
