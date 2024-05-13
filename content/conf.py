@@ -21,7 +21,7 @@ project = "Real-life compute cluster workflows - Parallelization"
 copyright = "2024-, The contributors"
 author = "The contributors"
 github_user = "coderefinery"
-github_repo_name = ""  # auto-detected from dirname if blank
+github_repo_name = "TTT4HPC_parallel_workflows"  # auto-detected from dirname if blank
 github_version = "main"
 conf_py_path = "/content/"  # with leading and trailing slash
 
