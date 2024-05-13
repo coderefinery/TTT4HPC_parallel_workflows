@@ -129,25 +129,3 @@ Some learner personas:
 
   You'll probably attend and do the more advanced exercises, while
   passively watching some of the more basic demos.
-
-
-About the course
-----------------
-
-
-
-
-
-
-
-See also
---------
-
-
-
-
-
-Credits
--------
-
-This course is a collaboration between ~10 different instructors.
