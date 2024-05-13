@@ -1,4 +1,4 @@
-# Hardware/Server limitations
+# Pitfalls - Hardware/Server limitations
 
 ```{admonition} Summary
 - **Hardware/Server Limitations**: Constraints from hardware or scheduler in parallel code.
