@@ -3,7 +3,12 @@
 # Parallelize using Script
 
 Even in an embarrassingly parallel situation we will have to make a couple of adaptions to the code
-in order to be able to run parallel executions of our code. In the {doc}`previous episode <jupyter_to_script>`, we converted a Jupyter notebook into a basic Python script that could be submitted with Slurm.
+in order to be able to run parallel executions of our code. In the
+{doc}`previous episode <jupyter_to_script>`, we converted a Jupyter
+notebook into a basic Python script that could be submitted with
+Slurm. This starting script can be found [on
+github](https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/python/scikit_example/knn_iris.py).
+
 
 ## Updating the code for parallel execution (and flexibility)
 

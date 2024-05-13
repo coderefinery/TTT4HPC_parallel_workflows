@@ -41,10 +41,10 @@ extensions = [
 
 # Settings for myst_nb:
 # https://myst-nb.readthedocs.io/en/latest/use/execute.html#triggering-notebook-execution
-jupyter_execute_notebooks = "off"
+# jupyter_execute_notebooks = "off"
 # jupyter_execute_notebooks = "auto"   # *only* execute if at least one output is missing.
 # jupyter_execute_notebooks = "force"
-#nb_execution_mode = "cache"
+#nb_execution_mode = "off"
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
@@ -59,6 +59,7 @@ exclude_patterns = [
     ".DS_Store",
     "jupyter_execute",
     "*venv*",
+    "code/jupyter/knn_iris.ipynb",
 ]
 
 

@@ -2,7 +2,9 @@
 
 For this walk-through we will be starting with
 a jupyter notebook that is based on the
-[Nearest Neighbor Classification example of the scikit-learn toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The notebook can be found [here](/code/jupyter/knn_iris.ipynb). This example tries to cluster points in the [Iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set).
+[Nearest Neighbor Classification example of the scikit-learn
+toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The
+notebook can be found [on github](https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/jupyter/knn_iris.ipynb). This example tries to cluster points in the [Iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set).
 
 
 The first step is to convert the notebook into a python script. This is rather simple and can be done in jupyter by going to:
@@ -11,9 +13,9 @@ The first step is to convert the notebook into a python script. This is rather s
 "File" -> "Save and Export Notebook as..." -> "Executable Script"
 ```
 
-The result of this conversion can be found [here](/code/python/scikit_example/knn_iris.py).
+The result of this conversion can be found [on github](https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/python/scikit_example/knn_iris.py).
 
-### Split into a pre-processing and a execution script
+## Split into a pre-processing and a execution script
 
 Our code has two distinct parts, a pre-processing part and a model generation and plotting part.
 The former part needs to be run exactly once and actually shouldn't be run separately each time if we
@@ -60,7 +62,7 @@ singularity build python3_10 docker://harbor.cs.aalto.fi/aaltorse-public/coderef
 
 This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our [Container Lecture](https://coderefinery.github.io/ttt4hpc_containers/)
 
-### Create a slurm script to run the code
+## Create a slurm script to run the code
 
 We will need a slurm script to submit our job to the cluster queue. The script we will be using is the
 following:
