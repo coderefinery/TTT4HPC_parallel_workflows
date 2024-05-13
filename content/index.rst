@@ -45,7 +45,7 @@ on mechanisms within the language.
    5 min ; :doc:`motivation`
    10 min ; :doc:`parallelization/concepts`
    5 min ; :doc:`parallelization/jupyter_to_script`
-   30 min ; :doc:`parallelization/parallelize_using_script`   
+   30 min ; :doc:`parallelization/parallelize_using_script`
    10 min ; :doc:`parallelization/array_jobs`
    20 min ; :doc:`parallelization/parallelize_using_workflow_manager`
 
@@ -68,12 +68,14 @@ which need to be taken into consideration.
 .. toctree::
    :maxdepth: 1
    :caption: Introduction
-   
+   :hidden:
+
    motivation
 
 .. toctree::
    :maxdepth: 1
    :caption: Parallelization
+   :hidden:
 
    parallelization/concepts
    parallelization/jupyter_to_script
@@ -84,6 +86,7 @@ which need to be taken into consideration.
 .. toctree::
    :maxdepth: 1
    :caption: Pitfalls
+   :hidden:
 
    pitfalls/concurrency_issues
    pitfalls/os_side
@@ -91,6 +94,7 @@ which need to be taken into consideration.
 .. toctree::
    :maxdepth: 1
    :caption: Conclusions
+   :hidden:
 
    conclusions
 
@@ -98,6 +102,7 @@ which need to be taken into consideration.
 .. toctree::
    :maxdepth: 1
    :caption: Reference
+   :hidden:
 
    quick-reference
    instructor-guide
