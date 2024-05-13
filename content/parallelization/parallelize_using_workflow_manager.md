@@ -1,33 +1,37 @@
 # Parallelize using Workflow Manager
 
-In a previous section ({ref}`parallelize_using_script`), we parallelized code using a Python/R script which loops over a parameter
-(or multiple parameters) and submits a job for each value (or combination) correspondingly. This approach 
-allows reusable code and generalizes well to different types and numbers of parameters (integers, floats, text, etc.)
-and their combinations. However, if the parallelized jobs are a part of a bigger workflow 
+In the previous section ({ref}`parallelize_using_script`), we parallelized code using a 
+Python/R script which loops over parameter values and submits a job for each value (or combination thereof) correspondingly. 
+This approach allows us to
+
+- use reusable code and 
+- generalizes well to different types and numbers of parameters (integers, floats, text, etc.) 
+
+However, if the parallelized jobs are a part of a bigger workflow 
 with several steps, such as preprocessing and postprocessing scripts, we need to make sure 
 that all the steps are run in the correct order and are correctly scheduled. 
 
 In the previous section example, the scheduling consisted of the following
 
 - training data had to be preprocessed before starting the training/plotting
-- the training/plotting jobs were run in parallel and thus submitted at the same time  
+- the training/plotting jobs were run in parallel and thus submitted at the same time. 
 
-and was implemented by submitting preprocessing and training/plotting using two separate submission scripts.
+We implemented the schedule by submitting preprocessing and training/plotting using two separate submission scripts.
 However, as an alternative to writing two submissions script, we next look at running the preprocessing and the 
 training/plotting scripts using a _workflow manager_ tool. 
 
-The general idea of a workflow manager 
-is that each computational step in a workflow is presented as a _rule_ which takes its input 
-as a file and writes its output to a file. The workflow manager then detects in which order 
-the steps need to be run and which steps of the workflow can be run in parallel. The manager
-also checks if some of the expected result files already exist on the disk and only runs jobs 
-needed to produce the missing results.
+The general idea of a workflow manager  is that each computational step in a workflow is 
+presented as a _rule_ which takes its input as a file and writes its output to a file. 
+The workflow manager then detects in which order the steps need to be run and which steps 
+of the workflow can be run in parallel. The manager also checks if some of the expected 
+result files already exist on the disk and only runs jobs needed to produce the missing results.
 
 While there are multiple workflow managers out there (see an 
 [example list](https://github.com/meirwah/awesome-workflow-engines)), here we will
 use a particular tool named [Snakemake](https://snakemake.readthedocs.io/en/stable/).
 In Snakemake, the workflow rules are written in a _Snakefile_ using a Python-like 
-scripting language. Snakemake itself is also written in Python.
+scripting language. Snakemake itself is also written in Python. However, the computational steps
+in the workflow can use any language.
 
 ## Accessing Snakemake on HPC
 
