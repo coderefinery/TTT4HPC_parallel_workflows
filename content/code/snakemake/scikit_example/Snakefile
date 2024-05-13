@@ -1,13 +1,20 @@
+# Parameter values
 N_NEIGHBORS_LIST = [1, 2, 4, 8, 16, 32, 64]
 METRICS = ["cosine", "euclidean", "haversine", "l1", "manhattan"]
 
 # Final output files
+# The "all" rule lists all files that should ultimately be produced by the workflow
 rule all:
     input:
         expand("results/n_neighbors={n_neighbors}___metric={metric}.png", n_neighbors=N_NEIGHBORS_LIST, metric=METRICS)
         
 
-# Rule to produce the final output files for parameter combinations
+# Rule to produce an image file corresponding to a (n_neighbors, metric) combination
+# This rule
+# - takes as input the preprocessed data
+# - produces an image file as output
+# - uses an Apptainer container to run the script
+# - logs the output of the script
 rule train_and_plot:
     input:
         "data/preprocessed/Iris.pkl"
@@ -21,7 +28,7 @@ rule train_and_plot:
         "python train_and_plot.py --n_neighbors {wildcards.n_neighbors} --metric {wildcards.metric} 1> {log} 2> {log}"
 
 
-# Rule to preprocess the data
+# Rule to preprocess and create the data set
 rule preprocess:
     output:
         "data/preprocessed/Iris.pkl"

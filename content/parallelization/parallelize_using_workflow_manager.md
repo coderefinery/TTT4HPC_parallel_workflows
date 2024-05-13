@@ -38,10 +38,9 @@ in the workflow can use any language.
 Snakemake can be installed using [pip](https://pypi.org/project/snakemake/) 
 along with its [Slurm plugin](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html).
 However, since not all clusters allow users to install their own software, it is up to the cluster admins to
-provide users with a recommended way to access to Snakemake. As an example:
+provide users with a recommended way to access to Snakemake. For example:
 
-- CSC Puhti users can follow their official Snakemake documentation [here](https://docs.csc.fi/support/tutorials/snakemake-puhti/).  
-
+- CSC Puhti users can follow their [official Snakemake documentation](https://docs.csc.fi/support/tutorials/snakemake-puhti/).  
 - Aalto Triton users can load the generic [scientific computing python environment module](https://scicomp.aalto.fi/triton/apps/python/#python-distributions): `module load scicomp-python-env` 
 
 **Consult your cluster's documentation and/or contact your cluster's administration to find the recommended way of using Snakemake.**

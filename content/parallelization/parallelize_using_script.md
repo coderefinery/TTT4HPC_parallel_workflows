@@ -69,7 +69,7 @@ Once this script has completed successfully we want to run all the different nei
 
 This script takes in one argument and passes it on to the `train_and_plot` script.
 
-### Cerate a submission script
+### Create a submission script
 
 Finally, we need to submit our job. This can be done using whatever language you prefer. Here, we give some examples:
 
