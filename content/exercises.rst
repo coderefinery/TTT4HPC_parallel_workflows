@@ -11,3 +11,12 @@ Any single teaching event will probably cover only a subset of these,
 depending on their interests.
 
 .. exerciselist::
+
+
+
+
+
+Other materials
+---------------
+
+There is an optional `exercise with Snakemake from the CodeRefinery lessons materials <https://coderefinery.github.io/reproducible-research/workflow-management/#example-workflow-tool-snakemake>`__.
