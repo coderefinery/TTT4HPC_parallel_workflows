@@ -1,10 +1,9 @@
 (parallelize_using_script)=
+
 # Parallelize using Script
 
 Even in an embarrassingly parallel situation we will have to make a couple of adaptions to the code
-in order to be able to run parallel executions of our code.  In the {doc}`previous episode <jupyter_to_script>`, we converted a Jupyter notebook into a basic Python script that could be submitted with Slurm.
-
-
+in order to be able to run parallel executions of our code. In the {doc}`previous episode <jupyter_to_script>`, we converted a Jupyter notebook into a basic Python script that could be submitted with Slurm.
 
 ## Updating the code for parallel execution (and flexibility)
 
@@ -51,14 +50,14 @@ First, we need to separate the execution of the pre-processing from the actual c
 This is to avoid having multiple jobs writing to the preprocessed data file at once and thus corrupting that file.
 The submission script for this is:
 
-```{literalinclude} /code/snakemake/scikit_example/submit_preprocess.sh
+```{literalinclude} /code/slurm/scikit_example/submit_preprocess.sh
     :language: slurm
 ```
 
 Which is just the first part of our previous submission script.
 Once this script has completed successfully we want to run all the different neighbor options, and thus need a submission script, which allows setting those:
 
-```{literalinclude} /code/snakemake/scikit_example/submission.sh
+```{literalinclude} /code/slurm/scikit_example/submission.sh
     :language: slurm
     :emphasize-lines: 7
 ```
