@@ -74,7 +74,6 @@ We run Snakemake with
 
 ```
 snakemake --snakefile Snakefile --profile profiles/slurm/ --software-deployment-method apptainer
-
 ```
 
 What the command does:
