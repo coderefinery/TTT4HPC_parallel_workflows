@@ -26,16 +26,6 @@ code, and how we can use this property to easily distribute heavy
 computation to multiple processes without the necessity of falling back
 on mechanisms within the language.
 
-.. csv-table::
-   :widths: auto
-   :delim: ;
-
-   5 min ; :doc:`motivation`
-   10 min ; :doc:`parallelization/concepts`
-   5 min ; :doc:`parallelization/jupyter_to_script`
-   30 min ; :doc:`parallelization/parallelize_using_script`
-   10 min ; :doc:`parallelization/array_jobs`
-   20 min ; :doc:`parallelization/parallelize_using_workflow_manager`
 
 Pitfalls
 --------
@@ -45,13 +35,21 @@ do not need to pay attention to what the resources are accessed by the code. Thi
 when the code runs in parallel. There are also additional considerations as to overheads
 which need to be taken into consideration.
 
+
 .. csv-table::
    :widths: auto
    :delim: ;
 
+   5 min ; :doc:`motivation`
+   10 min ; :doc:`parallelization/concepts`
    5 min ; :doc:`pitfalls/concurrency_issues`
    5 min ; :doc:`pitfalls/os_side`
+   5 min ; :doc:`parallelization/jupyter_to_script`
+   30 min ; :doc:`parallelization/parallelize_using_script`
+   10 min ; :doc:`parallelization/array_jobs`
+   20 min ; :doc:`parallelization/parallelize_using_workflow_manager`
    5 min ; :doc:`conclusions`
+
 
 .. toctree::
    :maxdepth: 1
@@ -66,25 +64,22 @@ which need to be taken into consideration.
    :hidden:
 
    parallelization/concepts
+   pitfalls/concurrency_issues
+   pitfalls/os_side
    parallelization/jupyter_to_script
    parallelization/parallelize_using_script
    parallelization/array_jobs
    parallelization/parallelize_using_workflow_manager
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Pitfalls
-   :hidden:
-
-   pitfalls/concurrency_issues
-   pitfalls/os_side
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Conclusions
-   :hidden:
-
    conclusions
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Exercises
+   :hidden:
+
+   exercises
+
 
 
 .. toctree::
@@ -94,7 +89,6 @@ which need to be taken into consideration.
 
    quick-reference
    instructor-guide
-   exercises
 
 
 .. _learner-personas:
