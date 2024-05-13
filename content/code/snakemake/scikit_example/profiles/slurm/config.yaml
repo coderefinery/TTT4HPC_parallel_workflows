@@ -15,7 +15,7 @@ set-threads:
 set-resources:
   preprocess:
     mem: 500MB
-    runtime: 15m
+    runtime: 30m
   train_and_plot:
     mem: 1GB
     runtime: 1h
