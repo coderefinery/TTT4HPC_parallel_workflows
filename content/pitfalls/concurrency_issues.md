@@ -1,7 +1,25 @@
 # Concurrency issues
 
+```{admonition} Summary
+ - **Concurrency Issues**: 
+    - Common in parallel computations when multiple threads modify the same source or element.
+ - **Concurrent File Access**:
+	- Issues arise when multiple processes try to write to or read from the same file simultaneously.
+	- Failed jobs due to simultaneous writes.
+	- Missing or corrupt data from conflicting writes.
+	- Solution: Ensure parallelized code operates independently.
+	- Use index-specific output files and a collection script.
+	- Example Slurm script for job dependency and collection provided.
+  - **Concurrent Database Access**:
+	- Databases handled by a server generally manage multiple requests and avoid concurrency issues.
+	- However, server bottlenecks can occur, leading to decreased performance.
+```
+
+
 Probably the most common issues when running embarrassingly, or in general parallel computations, arises due to concurrency issues, where multiple threads try to modify the same source or the same element.
 Here, we will give some examples of issues that can arise
+
+
 
 ## Concurrent File Access
 

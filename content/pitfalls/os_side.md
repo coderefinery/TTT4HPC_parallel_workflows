@@ -1,5 +1,18 @@
 # Hardware/Server limitations
 
+```{admonition} Summary
+- **Hardware/Server Limitations**: Constraints from hardware or scheduler in parallel code.
+
+- **File Access Limitations**:
+  - Spinning disks slower than SSDs; striping improves read speed for large files.
+  - Caches insufficient for many small files in parallel.
+  - Solutions: Use local disks or sharding to improve I/O speed.
+
+- **Scheduling Limitations**:
+  - Many small jobs burden the scheduler and increase overhead.
+  - Group iterations into fewer, longer jobs (e.g., 1-hour minimum) to improve efficiency.
+```
+
 While parallelizing code can often speed up processing of large quantities of problems, there are often limitations
 which are easily missed on the side of the scheduler, or the hardware used.
 
