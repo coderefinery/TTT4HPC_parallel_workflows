@@ -25,7 +25,7 @@ There are many options to do so, but we will use `argparse` in our example
 
 ```{literalinclude} /code/python/scikit_example/parameters/train_and_plot.py
     :language: python
-    :emphasize-lines: 3, 18-26, 37
+    :emphasize-lines: 3, 18-26, 36-37
 ```
 
 This file now receives one parameter called n_neighbors and uses this to determine the number of neighbors to run the different metrics for.
@@ -64,7 +64,7 @@ Once this script has completed successfully we want to run all the different nei
 
 ```{literalinclude} /code/slurm/scikit_example/submission.sh
     :language: slurm
-    :emphasize-lines: 7
+    :emphasize-lines: 10
 ```
 
 This script takes in one argument and passes it on to the `train_and_plot` script.

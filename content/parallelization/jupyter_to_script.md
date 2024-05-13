@@ -4,8 +4,12 @@ For this walk-through we will be starting with
 a jupyter notebook that is based on the
 [Nearest Neighbor Classification example of the scikit-learn
 toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html). The
-notebook can be found [on github](https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/jupyter/knn_iris.ipynb). This example tries to cluster points in the [Iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set).
+notebook can be found [on github](https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/jupyter/knn_iris.ipynb). 
+In it, we 
 
+- load and preprocess the [Iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set),
+- learn an Iris subspecies classifier, and
+- plot the classifier's boundary decisions on the original data set.
 
 The first step is to convert the notebook into a python script. This is rather simple and can be done in jupyter by going to:
 
@@ -26,7 +30,7 @@ Thus, we split our code into two files, `preprocess.py` and `train_and_plot.py`.
    ```{literalinclude} /code/snakemake/scikit_example/preprocess.py
       :language: python
       :linenos:
-      :emphasize-lines: 1-7, 53
+      :emphasize-lines: 1-7, 52
    ```
 ````
 
