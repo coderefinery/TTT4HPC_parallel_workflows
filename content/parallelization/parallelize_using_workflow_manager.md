@@ -1,30 +1,35 @@
 # Parallelize using Workflow Manager
 
-In the previous section ({ref}`parallelize_using_script`), we parallelized code using a 
-Python/R script which loops over parameter values and submits a job for each value (or combination thereof) correspondingly. 
-This approach allows us to
+In this section, we discuss running the Iris data set example using Snakemake, a workflow manager tool.
 
-- use reusable code and 
-- generalizes well to different types and numbers of parameters (integers, floats, text, etc.) 
+## Motivation
 
-However, if the parallelized jobs are a part of a bigger workflow 
-with several steps, such as preprocessing and postprocessing scripts, we need to make sure 
-that all the steps are run in the correct order and are correctly scheduled. 
+In the previous section ({ref}`parallelize_using_script`), we examined a workflow consisting of two
+scripts, `preprocess.py` and `train_and_plot.py`. 
 
-In the previous section example, the scheduling consisted of the following
+- The `preprocess.py` script created a preprocessed Iris data set and saved it to the disk. 
+- The `train_and_plot.py` script read (number of neighbors, distance metric) parameter values as command
+line arguments, loaded the preprocessed data, trained an Iris subspecies classifier, and 
+plotted the classifier's boundary decisions.
 
-- training data had to be preprocessed before starting the training/plotting
-- the training/plotting jobs were run in parallel and thus submitted at the same time. 
+The workflow was then submitted to Slurm queue using two separate submission scripts with the following schedule
 
-We implemented the schedule by submitting preprocessing and training/plotting using two separate submission scripts.
-However, as an alternative to writing two submissions script, we next look at running the preprocessing and the 
-training/plotting scripts using a _workflow manager_ tool. 
+- `preprocess.py` was run first.
+- Multiple jobs of `train_and_plot.py` using different (number of neighbors, distance metric) values were submitted in parallel. 
 
-The general idea of a workflow manager  is that each computational step in a workflow is 
+The submission scripts (and array jobs) work well for these kind of small workflows and 
+are usually the go-to solution. However, if the workflow is larger and consists of 
+several steps, such as multiple preprocessing and postprocessing scripts, we may instead
+want to use a dedicated _workflow manager_ tool.
+
+The general idea of a workflow manager is that each computational step in a workflow is 
 presented as a _rule_ which takes its input as a file and writes its output to a file. 
-The workflow manager then detects in which order the steps need to be run and which steps 
-of the workflow can be run in parallel. The manager also checks if some of the expected 
-result files already exist on the disk and only runs jobs needed to produce the missing results.
+The workflow manager then 
+
+- Detects in which order the steps need to be run and which steps of the workflow can be run in parallel. 
+- Checks if some of the expected result files already exist on the disk and only runs 
+jobs needed to produce the missing results.
+- Submits the jobs to the Slurm queue accordingly.
 
 While there are multiple workflow managers out there (see an 
 [example list](https://github.com/meirwah/awesome-workflow-engines)), here we will
@@ -33,7 +38,8 @@ In Snakemake, the workflow rules are written in a _Snakefile_ using a Python-lik
 scripting language. Snakemake itself is also written in Python. However, the computational steps
 in the workflow can use any language.
 
-## Accessing Snakemake on HPC
+
+## Accessing Snakemake on an HPC cluster
 
 Snakemake can be installed using [pip](https://pypi.org/project/snakemake/) 
 along with its [Slurm plugin](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html).
@@ -48,20 +54,18 @@ provide users with a recommended way to access to Snakemake. For example:
 
 ## Create and Run Snakemake Workflow
 
-In order to convert the submission script approach
-({ref}`parallelize_using_script`)
-to a Snakemake workflow, we do the following:
+In order to run the `preprocess.py` and `train_and_plot.py` as a Snakemake workflow, we do the following: 
 
 1. We write a _Snakefile_ which defines the preprocessing and training/plotting steps as rules.
-2. We write a _profile file_ which defines the same requested computational resources as the Slurm batch script.
+2. We write a _profile file_ which defines the same requested computational resources as the Slurm batch script in section {ref}`create_a_submission_script`.
 
-A Snakefile which defines the preprocessing and training/plotting steps and produces the same target images:
+The Snakefile:
 
 ```{literalinclude} /code/snakemake/scikit_example/Snakefile
     :language: python
 ```
 
-A Snakemake profile file which defines the same computational resources as the Slurm batch script:
+A Snakemake profile file:
 
 ```{literalinclude} /code/snakemake/scikit_example/profiles/slurm/config.yaml
 ```
