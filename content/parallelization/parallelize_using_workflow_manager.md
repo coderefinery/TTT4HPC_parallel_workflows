@@ -88,11 +88,13 @@ What the command does:
 
 ## Advantages and Disadvantages
 
-A summary of the advantages and disadvantages of using a workflow manager to parallelize jobs:
+Advantages of using a workflow manager to parallelize jobs:
 
-+ Defining complete workflow using a workflow manager makes sure that scripts are submitted in correct order and in parallel if possible.
-+ The workflow manager checks if some or all of the expected result files already exist and only runs jobs needed to produce the missing results.
-+ Workflow managers promote reproduciblity of experiments by fixing the computational pipeline and by encouraging the use of containers and environments.
+- Defining complete workflow using a workflow manager makes sure that scripts are submitted in correct order and in parallel if possible.
+- The workflow manager checks if some or all of the expected result files already exist and only runs jobs needed to produce the missing results.
+- Workflow managers promote reproduciblity of experiments by fixing the computational pipeline and by encouraging the use of containers and environments.
+
+Distadvantages:
 
 - Not all clusters support using the workflow manager(s) of your choice out of the box. In this case, contact the cluster admin and ask what is the recommended way to use them.  
 - Workflow managers are (relatively) complex tools with their own scripting syntaxes, practices, and ecosystems. Learning to use one will take time.
