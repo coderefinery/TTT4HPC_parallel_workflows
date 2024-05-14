@@ -7,9 +7,10 @@ toolkit](https://scikit-learn.org/stable/auto_examples/neighbors/plot_classifica
 notebook can be found [on github](https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/jupyter/knn_iris.ipynb). 
 In it, we 
 
-- load and preprocess the [Iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set),
-- learn an Iris subspecies classifier, and
-- plot the classifier's boundary decisions on the original data set.
+- load the [Iris dataset from scikit-learn datasets](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html),
+- preprocess the data and save the preprocessed version to disk,
+- learn an Iris subspecies classifier from a subset of the data, and
+- plot the classifier's boundary decisions on the complete data set.
 
 The first step is to convert the notebook into a python script. This is rather simple and can be done in jupyter by going to:
 
