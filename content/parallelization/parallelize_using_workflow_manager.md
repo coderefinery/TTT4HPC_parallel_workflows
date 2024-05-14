@@ -4,7 +4,7 @@ In this section, we discuss running the Iris data set example using Snakemake, a
 
 ## Motivation
 
-In the previous section ({ref}`parallelize_using_script`), we examined a workflow consisting of two
+In the previous section {ref}`parallelize_using_script`, we examined a workflow consisting of two
 scripts, `preprocess.py` and `train_and_plot.py`. 
 
 - The `preprocess.py` script created a preprocessed Iris data set and saved it to the disk. 
