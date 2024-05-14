@@ -1,6 +1,6 @@
 (parallelize_using_script)=
 
-# Parallelize using Script
+# Parallelize using scripting
 
 Even in an embarrassingly parallel situation we will have to make a couple of adaptions to the code
 in order to be able to run parallel executions of our code. In the
