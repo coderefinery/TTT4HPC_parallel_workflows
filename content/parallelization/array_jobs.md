@@ -33,32 +33,22 @@ input parameters are positive integer numbers, as it combines all jobs into a si
 ## Exercise 1
 
 ```{exercise} Parallel-2: Create a slurm script and run it.
-For our example we will need to adapt the above script a bit.
-First, we will need to run it for only four different values, as we only have four different
-countries. Second, we need to start our array at 0 since python uses zero-based indexing
-or we will need to adapt our code to change this.
+Let's assume, that we want to build the same job, that we had with the script submission but we want to use an
+array job instead of a submission script.
 
-Finally, we don't have any argument parsing, but need to provide the input parameter directly to the script as in `python long_code.py 1`
+To do this, we need to update the slurm script to use an array instead of an input argument.
 
-Build the sbatch script that we need to run the code for our 4 countries and run it on your cluster
+Create this submission script and run it on your cluster
 ```
 
 ````{solution} Solution: Parallel-2
 Here is a script that should be able to run on your cluster:
 
-```slurm
-#!/bin/bash
-#SBATCH --job-name=long_job
-#SBATCH --array=0-3
-#SBATCH --output=output_%A_%a.txt
-#SBATCH --error=error_%A_%a.txt
-
-# We assume, that python3 runs out of the box on your cluster, if not, you will have to
-# add a command here that makes the python3 command available on your cluster
-
-# Example command: replace with your actual command
-python3 long_code.py $SLURM_ARRAY_TASK_ID
-```
+   ```{literalinclude} /code/slurm/exercises/exercise_parallel_2_solution.sh
+      :language: slurm
+      :linenos:
+      :emphasize-lines: 3-5,7
+   ```
 
 ````
 
