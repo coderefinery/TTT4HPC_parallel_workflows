@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pitfalls - Hardware/Server limitations &mdash; Real-life compute cluster workflows - Parallelization  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_lesson.css?v=0c089442" />
+      <link rel="stylesheet" type="text/css" href="../../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=187304be"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/minipres.js?v=a0d29692"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Convert a Jupyter Notebook to a Python script" href="../../parallelization/jupyter_to_script/" />
+    <link rel="prev" title="Pitfalls - Concurrency issues" href="../concurrency_issues/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Real-life compute cluster workflows - Parallelization
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../motivation/">Motivation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Parallelization</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../parallelization/concepts/">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concurrency_issues/">Pitfalls - Concurrency issues</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pitfalls - Hardware/Server limitations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#file-access-limitations">File access limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scheduling-limitations">Scheduling limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../parallelization/jupyter_to_script/">Convert a Jupyter Notebook to a Python script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parallelization/parallelize_using_script/">Parallelize using scripting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parallelization/array_jobs/">Parallelize using Slurm Array jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parallelization/parallelize_using_workflow_manager/">Parallelize using Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conclusions/">Conclusions and recommendations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/">List of exercises</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../instructor-guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Real-life compute cluster workflows - Parallelization</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Pitfalls - Hardware/Server limitations</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/pitfalls/os_side.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pitfalls-hardware-server-limitations">
+<h1>Pitfalls - Hardware/Server limitations<a class="headerlink" href="#pitfalls-hardware-server-limitations" title="Link to this heading"></a></h1>
+<div class="admonition-summary admonition">
+<p class="admonition-title">Summary</p>
+<ul class="simple">
+<li><p><strong>Hardware/Server Limitations</strong>: Constraints from hardware or scheduler in parallel code.</p></li>
+<li><p><strong>File Access Limitations</strong>:</p>
+<ul>
+<li><p>Spinning disks slower than SSDs; striping improves read speed for large files.</p></li>
+<li><p>Caches insufficient for many small files in parallel.</p></li>
+<li><p>Solutions: Use local disks or sharding to improve I/O speed.</p></li>
+</ul>
+</li>
+<li><p><strong>Scheduling Limitations</strong>:</p>
+<ul>
+<li><p>Many small jobs burden the scheduler and increase overhead.</p></li>
+<li><p>Group iterations into fewer, longer jobs (e.g., 1-hour minimum) to improve efficiency.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>While parallelizing code can often speed up processing of large quantities of problems, there are often limitations
+which are easily missed on the side of the scheduler, or the hardware used.</p>
+<section id="file-access-limitations">
+<h2>File access limitations<a class="headerlink" href="#file-access-limitations" title="Link to this heading"></a></h2>
+<p>While your own computer will most likely have a fast SSD drive, many file servers still operate using spinning
+disks, which are inherently slower. To still provide fast access to data, this is commonly addressed by file
+systems where files get spread over multiple disks, and the file system starts to read from multiple disks at
+once, leading to an overall read speed similar to that of an SSD. However, this “striping” is commonly only
+applied to larger files, since the benefit for really small files is irrelevant.</p>
+<p>At the same time, the file systems or even the disks themselves commonly provide some caches, which allow for
+fast access to smaller files if they are read repetitively. However, imagine you have some code that loads
+many small files and you run this code in parallel (as is typical for a workflow training a model). All those
+processes will try to read thousands of small files at random. In this situation, the caches of the file
+system will not be large enough to contain all your requested files, while at the same time, each of the files
+will only be available on one disk. This drastically reduces the I/O speed of all of your runs.</p>
+<p>If your cluster has fast local disks on the compute nodes, it might be possible to copy all the files to the
+machine before starting your computation and then benefit from the speed on the local disks. However, this is
+limited by the size of the local disks and thus might not be applicable to large datasets.</p>
+<p>Another way to address this bottleneck is to use sharding. The idea is essentially to bunch smaller files into
+larger blocks. By doing so, you take advantage of the “pre-read” capability of the file system, leading to I/O
+speeds that are no longer limited by the read speed but by the network speed. Essentially, you store the files
+into a format that can be read sequentially (i.e., from start to finish of the file, like a tar file), and
+start reading through it. The disadvantage is that you no longer have random access to the files, i.e., you need
+to handle the order in which the files are read. For python and the pytorch environment, webdataset handles many
+parts of this process (once you have the shards). It will start reading from multiple files at once and keep a
+buffer of elements, from which it randomly chooses elements. This ensures that the model does not train on the
+order (as it is still somewhat random).</p>
+</section>
+<section id="scheduling-limitations">
+<h2>Scheduling limitations<a class="headerlink" href="#scheduling-limitations" title="Link to this heading"></a></h2>
+<p>If you parallelize code into very small units, you might end up with a lot of jobs that are very short (e.g.,
+because one run of your loop only takes a few seconds). While you will get your results, this poses a huge
+burden on the scheduler that assigns the start-times for the jobs on your cluster, as it has to reschedule your
+jobs very often (since most likely you won’t just give it a few seconds as run time).</p>
+<p>At the same time, you create a huge overhead by loading the same files thousands of times (everything used from
+your environment) and all the startup time necessary for your code. Imagine some code that has a startup
+(starting up python, importing some larger packages, loading data, etc.) which takes 60 seconds, it then runs
+a loop ten thousand times, with each iteration taking 2 minutes. So in total, you have a runtime of about 333
+hours. If you now split this into ten thousand individual jobs, you:</p>
+<ul class="simple">
+<li><p>Try to read the same files in your environment ten thousand times (leading to the I/O speed issues described
+above), which can increase the startup time.</p></li>
+<li><p>Add 10000 minutes of startup time to the execution of your code.</p></li>
+</ul>
+<p>Overall, out of 20002 minutes of CPU time, you now likely have some 35000 minutes (if not more). Depending on
+whether you pay for your usage, this might cause significant cost increases. In addition, the sheer amount of
+the jobs puts a lot of burden on the scheduler, and you might even run into job limits on your cluster.</p>
+<p>To avoid this kind of scenario and more efficiently use the resources, it is often better to group multiple
+iterations into one job. From our experience, a good minimum target runtime is about one hour. In the case
+described above, this would mean grouping about 60 iterations each into one job.</p>
+<p>This would leave us with 334 jobs, and a total CPU usage of about 20500 minutes, with the jobs likely finishing
+in about the same time as the 10000 jobs we had earlier.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../concurrency_issues/" class="btn btn-neutral float-left" title="Pitfalls - Concurrency issues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../parallelization/jupyter_to_script/" class="btn btn-neutral float-right" title="Convert a Jupyter Notebook to a Python script" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

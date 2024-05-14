@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example Walkthrough &mdash; Real-life compute cluster workflows - Parallelization  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/minipres.js"></script>
+        <script src="../../_static/tabs.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Parallelize using Slurm Array jobs" href="../array_jobs/" />
+    <link rel="prev" title="Concepts" href="../concepts/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Real-life compute cluster workflows - Parallelization
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../">Embarassingly Parallel Problems</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../motivation/">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/">Concepts</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example Walkthrough</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#convert-the-notebook-to-a-python-script">Convert the notebook to a python script</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#split-into-a-pre-processing-and-a-execution-script">Split into a pre-processing and a execution script</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#update-code-to-run-on-a-cluster">Update code to run on a cluster</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-a-container-for-dependencies">Build a container for dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-slurm-script-to-run-the-code">Create a slurm script to run the code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-the-code-for-parallel-execution-and-flexibility">Updating the code for parallel execution (and flexibility)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#update-the-slurm-scripts">Update the slurm scripts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-a-submission-script">Build a submission script</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#post-processing-steps">Post processing steps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-1">Exercise 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../array_jobs/">Parallelize using Slurm Array jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../submission_by_script/">Parallelize via a script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parallelize_using_snakemake/">Parallelize using Snakemake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../conclusions/">Conclusions and recommendations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pitfalls/">Pitfalls when parallelising code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conclusions/">Conclusions and recommendations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../instructor-guide/">Instructor’s guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/">List of exercises</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Real-life compute cluster workflows - Parallelization</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../">Embarassingly Parallel Problems</a></li>
+      <li class="breadcrumb-item active">Example Walkthrough</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/parallelization/code_adaptions.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example-walkthrough">
+<h1>Example Walkthrough<a class="headerlink" href="#example-walkthrough" title="Permalink to this heading"></a></h1>
+<p>Even in an embarassingly parallel situation we will have to make a couple of adaptions to the code
+in order to be able to run parallel executions of our code. For this walkthrough we will be starting with
+a jupyter notebook that is based on the
+<a class="reference external" href="https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html">Nearest Neighbor Classification example of the scikit-learn toolkit</a>. The notbook can be found <a class="reference internal" href="../../code/jupyter/knn_iris/"><span class="doc std std-doc">here</span></a></p>
+<section id="convert-the-notebook-to-a-python-script">
+<h2>Convert the notebook to a python script<a class="headerlink" href="#convert-the-notebook-to-a-python-script" title="Permalink to this heading"></a></h2>
+<p>The first step is to convert the notebook into a python script. This is rther simple and can be done in jupyter by going to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;File&quot;</span> <span class="o">-&gt;</span> <span class="s2">&quot;Save and Export Notebook as...&quot;</span> <span class="o">-&gt;</span> <span class="s2">&quot;Executable Script&quot;</span>
+</pre></div>
+</div>
+<p>The result of this conversion can be found <span class="xref myst">here</span>.</p>
+<section id="split-into-a-pre-processing-and-a-execution-script">
+<h3>Split into a pre-processing and a execution script<a class="headerlink" href="#split-into-a-pre-processing-and-a-execution-script" title="Permalink to this heading"></a></h3>
+<p>Our code has two distinct parts, a pre-processing part and a model generation and plotting part.
+The former part needs to be run exactly once and actually shouldn’t be run separately each time if we
+want to compare the results, as the training/test split should be the same for all methods.
+Thus, we split our code into two files, <code class="docutils literal notranslate"><span class="pre">preprocess.py</span></code> and <code class="docutils literal notranslate"><span class="pre">train_and_plot.py</span></code>.</p>
+<p>We only include those imports necessary and make sure, that the data/preprocessed folder exists when we run the code.
+This allows us to run the pre-processing once and in further steps always use the already pre-processed
+data avoiding unnecessary compute time if we e.g. want to change the metrics.</p>
+<p>For the training and plotting we again clean up the imports, and otherwise leave the code unchanged.</p>
+</section>
+</section>
+<section id="update-code-to-run-on-a-cluster">
+<h2>Update code to run on a cluster<a class="headerlink" href="#update-code-to-run-on-a-cluster" title="Permalink to this heading"></a></h2>
+<p>To run the code on a cluster we will need two steps, first, we will need to create an environment in
+which the code can run. How you go about this depends on the cluster. Most clusters allow
+the use of containers, which is why we will be using a container for this example.
+In the second step, we need to execute our code on the cluster using the scheduler.</p>
+<section id="build-a-container-for-dependencies">
+<h3>Build a container for dependencies<a class="headerlink" href="#build-a-container-for-dependencies" title="Permalink to this heading"></a></h3>
+<p>We assume, that your cluster does have support for singularity. We provide both a <span class="xref myst">singularity</span> and <span class="xref myst">docker definition file</span></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># You might need to activate singularity depending on your cluster</span>
+singularity<span class="w"> </span>build<span class="w"> </span>python3_10<span class="w"> </span>docker://harbor.cs.aalto.fi/aaltorse-public/parallel-workflow:latest
+</pre></div>
+</div>
+<p>This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our <span class="xref myst">Container Lecture</span></p>
+</section>
+<section id="create-a-slurm-script-to-run-the-code">
+<h3>Create a slurm script to run the code<a class="headerlink" href="#create-a-slurm-script-to-run-the-code" title="Permalink to this heading"></a></h3>
+<p>We will need a slurm script to submit our job to the cluster queue. The script we will be using is the
+following:</p>
+<div class="highlight-slurm notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="kp">#SBATCH --job-name=long_job</span>
+
+<span class="c1"># We assume, that singularity runs out of the box on your cluster, if not, you will have to</span>
+<span class="c1"># add a command here that makes the singularity command available on your cluster</span>
+
+<span class="c1"># Example command: replace with your actual command</span>
+singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>preprocess.py
+
+singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>train_and_plot.py
+</pre></div>
+</div>
+<p>When this is done, we now have some code that runs on the cluster. This code will run all the different
+metrics and neighbourhood sizes one after another.</p>
+</section>
+</section>
+<section id="updating-the-code-for-parallel-execution-and-flexibility">
+<h2>Updating the code for parallel execution (and flexibility)<a class="headerlink" href="#updating-the-code-for-parallel-execution-and-flexibility" title="Permalink to this heading"></a></h2>
+<p>Working on a cluster allows us to run code simultaneously on multiple machines. However, we need to find a way to split
+our work into suitable pieces, in order to make use of this. If you look at lines 30-66 of our code,
+you will notice, that it essentially runs the same code for all possible metricies and neighborhood numbers.
+All of these runs are completely independent of each other, and could all be run at the same time.
+We will start by running all metricies for each of the neighbor counts in parallel. To do so, we need to make the neighbor
+count a parameter of the function, that we can then pass in.
+Currently, our code has hard coded parameters, which makes this a difficult task, so it would be good
+to convert it such, that it allows us to specify the parameters that we want to use as arguments.
+There are many options to do so, but we will use <code class="docutils literal notranslate"><span class="pre">argparse</span></code> in our example
+(some more details can be found <a class="reference external" href="https://aaltoscicomp.github.io/python-for-scicomp/scripts/#parsing-command-line-arguments-with-argparse">here</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="hll"><span class="kn">import</span> <span class="nn">argparse</span>
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># ## Fit pipelines and plot decision boundaries</span>
+<span class="c1">#</span>
+<span class="c1"># Loop over the `n_neighbors` parameter</span>
+<span class="c1">#</span>
+<span class="c1"># - Fit a standard scaler + knn classifier pipeline</span>
+<span class="c1"># - Plot decision boundaries and save the image to disk</span>
+
+<span class="hll"><span class="c1"># Parse arguments</span>
+</span><span class="hll"><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+</span><span class="hll"><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+</span><span class="hll">    <span class="s2">&quot;--n_neighbors&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The number of neighbors to use for calculation.&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="hll"><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</span><span class="hll"><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">n_neighbors</span>
+</span>
+<span class="c1"># Load preprocessed data from disk</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/preprocessed/Iris.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">data</span>
+
+
+<span class="c1"># Parameters</span>
+<span class="c1"># Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span> <span class="s2">&quot;manhattan&quot;</span><span class="p">,</span> <span class="s2">&quot;l1&quot;</span><span class="p">,</span> <span class="s2">&quot;haversine&quot;</span><span class="p">,</span> <span class="s2">&quot;cosine&quot;</span><span class="p">]</span>
+<span class="hll">
+</span><span class="c1"># Loop over n_neighbors</span>
+<span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+    <span class="c1"># Fit</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+        <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s2">&quot;knn&quot;</span><span class="p">,</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="c1"># Plot</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+        <span class="n">clf</span><span class="p">,</span>
+        <span class="n">X_test</span><span class="p">,</span>
+        <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+        <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+        <span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">classes</span><span class="p">,</span>
+        <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Classes&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;3-Class classification</span><span class="se">\n</span><span class="s2">(k=</span><span class="si">{</span><span class="n">n_neighbors</span><span class="si">!r}</span><span class="s2">, metric=</span><span class="si">{</span><span class="n">metric</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Save image to disk</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;results/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results/n_neighbors=</span><span class="si">{</span><span class="n">n_neighbors</span><span class="si">}</span><span class="s2">___metric=</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This file now receives one parameter called n_neighbors and uses this to determine the number of neighbors to run the different metrics for.
+This also requires us to update the submission script, in order to allow passing in the neighbor count.
+There are two ways how this can be done.</p>
+<ul class="simple">
+<li><p>Slurm Array jobs</p></li>
+<li><p>Custom Submission scripts</p></li>
+</ul>
+<p>Slurm array jobs have the advantage of being an integral part of slurm, so you can use features like mail
+notification once the whole job is done. The difference between a “normal” job and an array job is that
+an arrayjob runs the same code multiple times with the only difference between the jobs being the <code class="docutils literal notranslate"><span class="pre">$SLURM_ARRAY_JOB_ID</span></code>
+variable. The values for the variable are defined in the submission script using the <code class="docutils literal notranslate"><span class="pre">--array</span></code> parameter, which can take
+either ranges (<code class="docutils literal notranslate"><span class="pre">--array=[0-3]</span></code>, four jobs with array id 0,1,2 and 3) or individual numbers (<code class="docutils literal notranslate"><span class="pre">--array=1,3,6</span></code> three jobs with id 1,3 and 6). However you can only use integer values for this, so if you need any other input, you will either need to
+convert the numbers in your code, or keep hard coded variable lists in your code, which makes it less flexible.</p>
+<p>Using a custom submission script has the disadvantage, that you need to code it. In addition, since it submits individual
+jobs, you also cannot make use of notifications for the whole set of jobs. However, it has the advantage that you
+are more flexible in what kind of variables you want to post to your job.</p>
+<p>For this walkthrough, we will use a custom submission script, but we also give an example of how to do it with a
+slurm array job <a class="reference internal" href="../array_jobs/"><span class="doc std std-doc">here</span></a></p>
+<section id="update-the-slurm-scripts">
+<h3>Update the slurm scripts<a class="headerlink" href="#update-the-slurm-scripts" title="Permalink to this heading"></a></h3>
+<p>First, we need to separate the execution of the pre-processing from the actual calculations.
+This is to avoid having multiple jobs writing to the preprocessed data file at once and thus corrupting that file.
+The submission script for this is:</p>
+<div class="highlight-slurm notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="kp">#SBATCH --job-name=long_job</span>
+
+<span class="c1"># We assume, that singularity runs out of the box on your cluster, if not, you will have to</span>
+<span class="c1"># add a command here that makes the singularity command available on your cluster</span>
+
+<span class="c1"># Example command: replace with your actual command</span>
+singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>preprocess.py
+</pre></div>
+</div>
+<p>Which is just the first part of our previous submission script.
+Once this script has completed successfully we want to run all the different neighbor options, and thus need a submission script, which allows setting those:</p>
+<div class="highlight-slurm notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="kp">#SBATCH --job-name=long_job</span>
+
+<span class="c1"># We assume, that singularity runs out of the box on your cluster, if not, you will have to</span>
+<span class="c1"># add a command here that makes the singularity command available on your cluster</span>
+
+<span class="hll">singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>train_and_plot.py<span class="w"> </span>--n_neighbors<span class="w"> </span><span class="nv">$1</span>
+</span></pre></div>
+</div>
+<p>This script takes in one argument and passes it on to the <code class="docutils literal notranslate"><span class="pre">train_and_plot</span></code> script.</p>
+</section>
+<section id="build-a-submission-script">
+<h3>Build a submission script<a class="headerlink" href="#build-a-submission-script" title="Permalink to this heading"></a></h3>
+<p>Finally, we need to submit our job. This can be done using whatever language you prefer. Here, we give some examples:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-UHl0aG9u" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="0">Python</button><button aria-controls="panel-0-Ug==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-Ug==" name="Ug==" role="tab" tabindex="-1">R</button></div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel group-tab" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;sbatch&quot;</span><span class="p">,</span> <span class="s2">&quot;submission.sh&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can run this code by running <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">submission.py</span></code> and it will submit the
+submission.sh file to the slurm scheduler for each of your options.</p>
+</div><div aria-labelledby="tab-0-Ug==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-Ug==" name="Ug==" role="tabpanel" tabindex="0"><div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the inputs arrays</span>
+<span class="n">neighbors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">8</span><span class="p">,</span><span class="m">16</span><span class="p">,</span><span class="m">32</span><span class="p">,</span><span class="m">64</span><span class="p">)</span>
+
+<span class="c1"># Define a function to run the system command &quot;echo World&quot;</span>
+<span class="n">run_echo_world</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nf">seq_along</span><span class="p">(</span><span class="n">neighbors</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1"># Extract elements at the current index from each array</span>
+<span class="w">    </span><span class="n">element1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">neighbors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w">        </span>
+<span class="w">    </span><span class="c1"># Build the command line</span>
+<span class="w">    </span><span class="n">command</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;echo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;submission.sh&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">element1</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">)</span><span class="w">    </span>
+<span class="w">    </span><span class="nf">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="p">}</span>
+
+<span class="c1"># Call the function</span>
+<span class="nf">run_echo_world</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can run this code by running <code class="docutils literal notranslate"><span class="pre">Rscript</span> <span class="pre">submission.r</span></code> and it will submit the
+submission.sh file to the slurm scheduler for each of your options.</p>
+</div></div>
+</section>
+</section>
+<section id="post-processing-steps">
+<h2>Post processing steps<a class="headerlink" href="#post-processing-steps" title="Permalink to this heading"></a></h2>
+<p>While not relevant to our example, in many cases, you will generate many output files, that you need to
+combine again after the computation is done (e.g. to compute some general statistics).
+In this situation, you need to think about how the result data from each run can be stored.
+A simple example of this could be (in pseudo-code):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">load_preprocessed_data</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="mf">1..20</span><span class="p">:</span>
+    <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">calc_statistics</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you parallelize this code you will end up with something along the lines of:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="n">index_from_arguments</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_preprocessed_data</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">compute</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;outputs/result_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which saves the data to a file in the results folder
+You can then use the following code to collect these results into one large file, (or directly process
+it instead of saving it again)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">folder_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">data_array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;result_&quot;</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">data_array</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exercise-1">
+<h2>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this heading"></a></h2>
+<div class="admonition-parallel-1-add-the-metrics-as-a-parameter-to-the-submission exercise important admonition" id="exercise-0">
+<p class="admonition-title">Parallel-1: Add the metrics as a parameter to the submission</p>
+<p>Let’s assume that we noticed, that running all metrics still took too long for our purpose, and we also
+want to parallelize that part.
+You will need to update the <code class="docutils literal notranslate"><span class="pre">train_and_plot.py</span></code> script, the submission script and the sbatch script.</p>
+</div>
+<div class="admonition-solution-parallel-1 solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Solution: Parallel-1</p>
+<p>We will need to remove the metrics loop from the <code class="docutils literal notranslate"><span class="pre">train_and_plot.py</span></code> script as follows and add a parser for it as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># ## Fit pipelines and plot decision boundaries</span>
+<span class="c1">#</span>
+<span class="c1"># Loop over the `n_neighbors` parameter</span>
+<span class="c1">#</span>
+<span class="c1"># - Fit a standard scaler + knn classifier pipeline</span>
+<span class="c1"># - Plot decision boundaries and save the image to disk</span>
+
+<span class="c1"># Parse arguments</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s2">&quot;--n_neighbors&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The number of neighbors to use for calculation.&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="hll"><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+</span><span class="hll">    <span class="s2">&quot;--metric&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The metric to use&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">n_neighbors</span>
+<span class="hll"><span class="n">metric</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">metric</span>
+</span>
+<span class="c1"># Load preprocessed data from disk</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/preprocessed/Iris.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">data</span>
+
+
+<span class="c1"># Parameters</span>
+<span class="c1"># Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics</span>
+
+<span class="c1"># Loop over n_neighbors</span>
+<span class="c1"># Fit</span>
+<span class="hll"><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+</span><span class="hll">    <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+</span><span class="hll">        <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+</span><span class="hll">        <span class="p">(</span><span class="s2">&quot;knn&quot;</span><span class="p">,</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)),</span>
+</span><span class="hll">    <span class="p">]</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="hll"><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span class="hll">
+</span><span class="hll"><span class="c1"># Plot</span>
+</span><span class="hll"><span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+</span><span class="hll">    <span class="n">clf</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">X_test</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">xlabel</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+</span><span class="hll">    <span class="n">ylabel</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+</span><span class="hll">    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="hll"><span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+</span><span class="hll">    <span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+</span><span class="hll">    <span class="n">classes</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Classes&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="hll"><span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+</span><span class="hll">    <span class="sa">f</span><span class="s2">&quot;3-Class classification</span><span class="se">\n</span><span class="s2">(k=</span><span class="si">{</span><span class="n">n_neighbors</span><span class="si">!r}</span><span class="s2">, metric=</span><span class="si">{</span><span class="n">metric</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="hll"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span><span class="hll">
+</span><span class="hll"><span class="c1"># Save image to disk</span>
+</span><span class="hll"><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;results/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span class="hll"><span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results/n_neighbors=</span><span class="si">{</span><span class="n">n_neighbors</span><span class="si">}</span><span class="s2">___metric=</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Then, we need to update the submission slurm script, adding a further parameter to it:</p>
+<div class="highlight-slurm notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="kp">#SBATCH --job-name=long_job</span>
+
+<span class="c1"># We assume, that singularity runs out of the box on your cluster, if not, you will have to</span>
+<span class="c1"># add a command here that makes the singularity command available on your cluster</span>
+
+<span class="hll">singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>train_and_plot.py<span class="w"> </span>--n_neighbors<span class="w"> </span><span class="nv">$1</span><span class="w"> </span>--metrics<span class="w"> </span><span class="nv">$2</span>
+</span></pre></div>
+</div>
+<p>And finally, we need to update the submission python script to also use the metrics values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span>
+<span class="hll"><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span> <span class="s2">&quot;manhattan&quot;</span><span class="p">,</span> <span class="s2">&quot;l1&quot;</span><span class="p">,</span> <span class="s2">&quot;haversine&quot;</span><span class="p">,</span> <span class="s2">&quot;cosine&quot;</span><span class="p">]</span>
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+<span class="hll">    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+</span>        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;sbatch&quot;</span><span class="p">,</span> <span class="s2">&quot;submission.sh&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../concepts/" class="btn btn-neutral float-left" title="Concepts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../array_jobs/" class="btn btn-neutral float-right" title="Parallelize using Slurm Array jobs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convert a Jupyter Notebook to a Python script &mdash; Real-life compute cluster workflows - Parallelization  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_lesson.css?v=0c089442" />
+      <link rel="stylesheet" type="text/css" href="../../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=187304be"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="../../_static/minipres.js?v=a0d29692"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Parallelize using scripting" href="../parallelize_using_script/" />
+    <link rel="prev" title="Pitfalls - Hardware/Server limitations" href="../../pitfalls/os_side/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Real-life compute cluster workflows - Parallelization
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../motivation/">Motivation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Parallelization</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../concepts/">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pitfalls/concurrency_issues/">Pitfalls - Concurrency issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pitfalls/os_side/">Pitfalls - Hardware/Server limitations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Convert a Jupyter Notebook to a Python script</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#split-into-a-pre-processing-and-a-execution-script">Split into a pre-processing and a execution script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-code-to-run-on-a-cluster">Update code to run on a cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-a-container-for-dependencies">Build a container for dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-slurm-script-to-run-the-code">Create a slurm script to run the code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../parallelize_using_script/">Parallelize using scripting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array_jobs/">Parallelize using Slurm Array jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallelize_using_workflow_manager/">Parallelize using Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conclusions/">Conclusions and recommendations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/">List of exercises</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../instructor-guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Real-life compute cluster workflows - Parallelization</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Convert a Jupyter Notebook to a Python script</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/parallelization/jupyter_to_script.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="convert-a-jupyter-notebook-to-a-python-script">
+<h1>Convert a Jupyter Notebook to a Python script<a class="headerlink" href="#convert-a-jupyter-notebook-to-a-python-script" title="Link to this heading"></a></h1>
+<p>For this walk-through we will be starting with
+a jupyter notebook that is based on the
+<a class="reference external" href="https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html">Nearest Neighbor Classification example of the scikit-learn
+toolkit</a>. The
+notebook can be found <a class="reference external" href="https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/jupyter/knn_iris.ipynb">on github</a>.
+In it, we</p>
+<ul class="simple">
+<li><p>load the <a class="reference external" href="https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html">Iris dataset from scikit-learn datasets</a>,</p></li>
+<li><p>preprocess the data and save the preprocessed version to disk,</p></li>
+<li><p>learn an Iris subspecies classifier from a subset of the data, and</p></li>
+<li><p>plot the classifier’s boundary decisions on the complete data set.</p></li>
+</ul>
+<p>The first step is to convert the notebook into a python script. This is rather simple and can be done in jupyter by going to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;File&quot;</span> <span class="o">-&gt;</span> <span class="s2">&quot;Save and Export Notebook as...&quot;</span> <span class="o">-&gt;</span> <span class="s2">&quot;Executable Script&quot;</span>
+</pre></div>
+</div>
+<p>The result of this conversion can be found <a class="reference external" href="https://github.com/coderefinery/TTT4HPC_parallel_workflows/blob/main/content/code/python/scikit_example/knn_iris.py">on github</a>.</p>
+<section id="split-into-a-pre-processing-and-a-execution-script">
+<h2>Split into a pre-processing and a execution script<a class="headerlink" href="#split-into-a-pre-processing-and-a-execution-script" title="Link to this heading"></a></h2>
+<p>Our code has two distinct parts, a pre-processing part and a model generation and plotting part.
+The former part needs to be run exactly once and actually shouldn’t be run separately each time if we
+want to compare the results, as the training/test split should be the same for all methods.
+Thus, we split our code into two files, <code class="docutils literal notranslate"><span class="pre">preprocess.py</span></code> and <code class="docutils literal notranslate"><span class="pre">train_and_plot.py</span></code>.</p>
+<div class="toggle docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</span><span class="hll"><span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">pickle</span>
+</span><span class="hll"><span class="linenos"> 3</span>
+</span><span class="hll"><span class="linenos"> 4</span>
+</span><span class="hll"><span class="linenos"> 5</span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</span><span class="hll"><span class="linenos"> 6</span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+</span><span class="hll"><span class="linenos"> 7</span>
+</span><span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1"># ## Preprocess data</span>
+<span class="linenos">10</span><span class="c1">#</span>
+<span class="linenos">11</span><span class="c1"># Load Iris flower data set from file.</span>
+<span class="linenos">12</span><span class="c1">#</span>
+<span class="linenos">13</span><span class="c1"># Extract two features</span>
+<span class="linenos">14</span><span class="c1">#</span>
+<span class="linenos">15</span><span class="c1"># - `SepalLengthCm`</span>
+<span class="linenos">16</span><span class="c1"># - `SepalWidthCm`</span>
+<span class="linenos">17</span><span class="c1">#</span>
+<span class="linenos">18</span><span class="c1"># out of the available four</span>
+<span class="linenos">19</span><span class="c1">#</span>
+<span class="linenos">20</span><span class="c1"># - `SepalLengthCm`</span>
+<span class="linenos">21</span><span class="c1"># - `SepalWidthCm`</span>
+<span class="linenos">22</span><span class="c1"># - `PetalLengthCm`</span>
+<span class="linenos">23</span><span class="c1"># - `PetalWidthCm`</span>
+<span class="linenos">24</span><span class="c1">#</span>
+<span class="linenos">25</span><span class="c1"># and map the class labels</span>
+<span class="linenos">26</span><span class="c1">#</span>
+<span class="linenos">27</span><span class="c1"># - `Iris-setosa`</span>
+<span class="linenos">28</span><span class="c1"># - `Iris-versicolor`</span>
+<span class="linenos">29</span><span class="c1"># - `Iris-virginica`)</span>
+<span class="linenos">30</span><span class="c1">#</span>
+<span class="linenos">31</span><span class="c1"># to integers 0, 1, and 2.</span>
+<span class="linenos">32</span><span class="c1">#</span>
+<span class="linenos">33</span><span class="c1"># Divide the data randomly to train and test sets.</span>
+<span class="linenos">34</span><span class="c1">#</span>
+<span class="linenos">35</span><span class="c1"># Save the preprocessed data to disk.</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="c1"># Load preprocessed data from disk</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span><span class="c1"># Load data from sklearn datasets</span>
+<span class="linenos">41</span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span><span class="c1"># Extract two features</span>
+<span class="linenos">44</span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sepal length (cm)&quot;</span><span class="p">,</span> <span class="s2">&quot;sepal width (cm)&quot;</span><span class="p">]</span>
+<span class="linenos">45</span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span><span class="c1"># Class labels</span>
+<span class="linenos">48</span><span class="n">classes</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span>
+<span class="linenos">49</span><span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="c1"># Divide randomly to train and test set</span>
+<span class="hll"><span class="linenos">52</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class="linenos">53</span>
+<span class="linenos">54</span><span class="c1"># Save to disk</span>
+<span class="linenos">55</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/preprocessed&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">56</span><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+<span class="linenos">57</span>    <span class="p">[</span><span class="n">X</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">classes</span><span class="p">],</span>
+<span class="linenos">58</span>    <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/preprocessed/Iris.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">),</span>
+<span class="linenos">59</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We only include those imports necessary and make sure, that the data/preprocessed folder exists when we run the code.
+This allows us to run the pre-processing once and in further steps always use the already pre-processed
+data avoiding unnecessary compute time if we e.g. want to change the metrics.</p>
+<div class="toggle docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</span><span class="hll"><span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">pickle</span>
+</span><span class="hll"><span class="linenos"> 3</span>
+</span><span class="hll"><span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span><span class="hll"><span class="linenos"> 5</span>
+</span><span class="hll"><span class="linenos"> 6</span><span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+</span><span class="hll"><span class="linenos"> 7</span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+</span><span class="hll"><span class="linenos"> 8</span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+</span><span class="hll"><span class="linenos"> 9</span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+</span><span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># ## Fit pipelines and plot decision boundaries</span>
+<span class="linenos">12</span><span class="c1">#</span>
+<span class="linenos">13</span><span class="c1"># Loop over the `n_neighbors` parameter</span>
+<span class="linenos">14</span><span class="c1">#</span>
+<span class="linenos">15</span><span class="c1"># - Fit a standard scaler + knn classifier pipeline</span>
+<span class="linenos">16</span><span class="c1"># - Plot decision boundaries and save the image to disk</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1"># Load preprocessed data from disk</span>
+<span class="linenos">19</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/preprocessed/Iris.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos">20</span>    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="n">X</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">data</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="c1"># Parameters</span>
+<span class="linenos">24</span><span class="c1"># Metrics: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.distance_metrics.html#sklearn.metrics.pairwise.distance_metrics</span>
+<span class="linenos">25</span><span class="n">n_neighbors_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span>
+<span class="linenos">26</span><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span> <span class="s2">&quot;manhattan&quot;</span><span class="p">,</span> <span class="s2">&quot;l1&quot;</span><span class="p">,</span> <span class="s2">&quot;haversine&quot;</span><span class="p">,</span> <span class="s2">&quot;cosine&quot;</span><span class="p">]</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="c1"># Loop over n_neighbors</span>
+<span class="linenos">29</span><span class="k">for</span> <span class="n">n_neighbors</span> <span class="ow">in</span> <span class="n">n_neighbors_list</span><span class="p">:</span>
+<span class="linenos">30</span>    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+<span class="linenos">31</span>        <span class="c1"># Fit</span>
+<span class="linenos">32</span>        <span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+<span class="linenos">33</span>            <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+<span class="linenos">34</span>                <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+<span class="linenos">35</span>                <span class="p">(</span><span class="s2">&quot;knn&quot;</span><span class="p">,</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)),</span>
+<span class="linenos">36</span>            <span class="p">]</span>
+<span class="linenos">37</span>        <span class="p">)</span>
+<span class="linenos">38</span>        <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>        <span class="c1"># Plot</span>
+<span class="linenos">41</span>        <span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+<span class="linenos">42</span>            <span class="n">clf</span><span class="p">,</span>
+<span class="linenos">43</span>            <span class="n">X_test</span><span class="p">,</span>
+<span class="linenos">44</span>            <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+<span class="linenos">45</span>            <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+<span class="linenos">46</span>            <span class="n">xlabel</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="linenos">47</span>            <span class="n">ylabel</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+<span class="linenos">48</span>            <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">49</span>            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="linenos">50</span>        <span class="p">)</span>
+<span class="linenos">51</span>        <span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="linenos">52</span>        <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+<span class="linenos">53</span>            <span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+<span class="linenos">54</span>            <span class="n">classes</span><span class="p">,</span>
+<span class="linenos">55</span>            <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span>
+<span class="linenos">56</span>            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Classes&quot;</span><span class="p">,</span>
+<span class="linenos">57</span>        <span class="p">)</span>
+<span class="linenos">58</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+<span class="linenos">59</span>            <span class="sa">f</span><span class="s2">&quot;3-Class classification</span><span class="se">\n</span><span class="s2">(k=</span><span class="si">{</span><span class="n">n_neighbors</span><span class="si">!r}</span><span class="s2">, metric=</span><span class="si">{</span><span class="n">metric</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+<span class="linenos">60</span>        <span class="p">)</span>
+<span class="linenos">61</span>        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos">62</span>        <span class="c1"># Save image to disk</span>
+<span class="linenos">63</span>        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;results/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">64</span>        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results/n_neighbors=</span><span class="si">{</span><span class="n">n_neighbors</span><span class="si">}</span><span class="s2">___metric=</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+<span class="linenos">65</span>        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>For the training and plotting we again clean up the imports, and otherwise leave the code unchanged.</p>
+</section>
+<section id="update-code-to-run-on-a-cluster">
+<h2>Update code to run on a cluster<a class="headerlink" href="#update-code-to-run-on-a-cluster" title="Link to this heading"></a></h2>
+<p>To run the code on a cluster we will need two steps, first, we will need to create an environment in
+which the code can run. How you go about this depends on the cluster. Most clusters allow
+the use of containers, which is why we will be using a container for this example.
+In the second step, we need to execute our code on the cluster using the scheduler.</p>
+<section id="build-a-container-for-dependencies">
+<h3>Build a container for dependencies<a class="headerlink" href="#build-a-container-for-dependencies" title="Link to this heading"></a></h3>
+<p>We assume, that your cluster does have support for singularity. We provide both a <a class="reference download internal" download="" href="../../_downloads/3a542c4fcb0f4f4ff08e30966a788d28/singularity.def"><span class="xref download myst">singularity</span></a> and <a class="reference download internal" download="" href="../../_downloads/d3e078447c473154b971e48756aadb5f/Dockerfile"><span class="xref download myst">docker definition file</span></a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># You might need to activate singularity depending on your cluster</span>
+singularity<span class="w"> </span>build<span class="w"> </span>python3_10<span class="w"> </span>docker://harbor.cs.aalto.fi/aaltorse-public/coderefinery/parallel-workflow:latest
+</pre></div>
+</div>
+<p>This commands builds the singularity container based on the docker image we provide. Containers are discussed in more details in our <a class="reference external" href="https://coderefinery.github.io/ttt4hpc_containers/">Container Lecture</a></p>
+</section>
+</section>
+<section id="create-a-slurm-script-to-run-the-code">
+<h2>Create a slurm script to run the code<a class="headerlink" href="#create-a-slurm-script-to-run-the-code" title="Link to this heading"></a></h2>
+<p>We will need a slurm script to submit our job to the cluster queue. The script we will be using is the
+following:</p>
+<div class="highlight-slurm notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="kp">#SBATCH --job-name=long_job</span>
+<span class="kp">#SBATCH --time=01:00:00</span>
+<span class="kp">#SBATCH --mem=1G</span>
+<span class="kp">#SBATCH --cpus-per-task=1</span>
+
+<span class="c1"># We assume, that singularity runs out of the box on your cluster, if not, you will have to</span>
+<span class="c1"># add a command here that makes the singularity command available on your cluster</span>
+
+<span class="c1"># Example command: replace with your actual command</span>
+singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>preprocess.py
+
+singularity<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python_container<span class="w"> </span>python<span class="w"> </span>train_and_plot.py
+</pre></div>
+</div>
+<p>When this is done, we now have some code that runs on the cluster. This code will run all the different
+metrics and neighbourhood sizes one after another.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../pitfalls/os_side/" class="btn btn-neutral float-left" title="Pitfalls - Hardware/Server limitations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../parallelize_using_script/" class="btn btn-neutral float-right" title="Parallelize using scripting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: python:3.10.14-slim
+
+%post
+    # Install any needed dependencies specified in requirements.txt
+    pip install --no-cache-dir scikit-learn numpy pandas matplotlib
